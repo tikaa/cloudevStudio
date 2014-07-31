@@ -1,5 +1,9 @@
 jsPlumb.ready(function() {
 
+
+	jsPlumb.bind('connection',function(info,ev){
+    		var con=info.connection;   //this is the new connection
+	});
 	var instance = jsPlumb.getInstance({
 		// default drag options
 		DragOptions : { cursor: 'pointer', zIndex:2000 },
@@ -128,9 +132,58 @@ jsPlumb.ready(function() {
 	});
 
 	jsPlumb.fire("jsPlumbDemoLoaded", instance);
+		
 
 
-}
+//select and delete options
+var CurElement = null;
+      $("#flowchartWindow2").bind('click', function () {
+          if (CurElement != null)
+              CurElement.removeClass('selected'); //deselect old
+          
+          CurElement = $(this);
+          
+          CurElement.addClass('selected'); //select new
+      });
+ $("#flowchartWindow1").bind('click', function () {
+          if (CurElement != null)
+              CurElement.removeClass('selected'); //deselect old
+          
+          CurElement = $(this);
+          
+          CurElement.addClass('selected'); //select new
+      });
+ $("#flowchartWindow3").bind('click', function () {
+          if (CurElement != null)
+              CurElement.removeClass('selected'); //deselect old
+          
+          CurElement = $(this);
+          
+          CurElement.addClass('selected'); //select new
+      });
+ $("#flowchartWindow4").bind('click', function () {
+          if (CurElement != null)
+              CurElement.removeClass('selected'); //deselect old
+          
+          CurElement = $(this);
+          
+          CurElement.addClass('selected'); //select new
+      });
+      
+      $(document).keydown(function(e) {
+          //alert(e.which); //run to find the keycode of the key you want, don't use backspace, that is used to go back in browser history
+          if (e.keyCode == 46 /*the delete key*/ && CurElement != null)
+          {
+              CurElement.remove();
+              //Run other code here when the element 'CurElement' is deleted
+              instance.detachAllConnections();
+              
+              CurElement = null; //clear, that element doesn't exist anymore
+          }
+      });
+
+//popup
+
 	
 });
 
