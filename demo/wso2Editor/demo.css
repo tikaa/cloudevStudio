@@ -66,72 +66,43 @@ font-size:0.9em;
     overflow: auto;
 }
 
-.yui3-toolbar-button {
-    display: inline-block;
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: #808080;
-    background-color: #dfdfdf;
-    margin: .25em;
-    font-size: 85%;  /* 11px */
+section#container {
+	height: auto;
+	height: 750px;
+	position: relative;
 }
 
-.first-child {
-    margin-left: .5em;
+section#sec_sidebar {
+	width: 8%;
+	margin: 0.4em;
+	background: #3B6D8C;
+	float: left;
+	height: 96%;
+	border: 10px ridge #A0D3F2;
+	
+	box-shadow: 4px 4px 8px #1c1c1c;
+	-webkit-box-shadow: 4px 4px 8px #1c1c1c;
+	-moz-box-shadow: 4px 4px 8px #1c1c1c;
+	-o-box-shadow: 4px 4px 8px #1c1c1c;
+	-moz-border-radius: 5px;
 }
 
-.yui3-toolbar-button span {
-    display: inline-block;
-    border-width: 0 1px;
-    border-style: solid;
-    border-color: #808080;
-    margin: 0 -1px;
-    *position: relative;    /* Necessary to get negative margins working in IE */
-    *left: -1px;
+section#sec_main {
+	width: 43%;
+	height: 96%;
+	float: left;
+	border: 10px ridge #BF7950;
+	
+	background-image: url("../images/corkboard.jpg");
+	background-repeat: repeat;
+	margin:0.7em;
+	box-shadow: 4px 4px 8px #1c1c1c;
+	-webkit-box-shadow: 4px 4px 8px #1c1c1c;
+	-moz-box-shadow: 4px 4px 8px #1c1c1c;
+	-o-box-shadow: 4px 4px 8px #1c1c1c;
+	-moz-border-radius: 15px;
+
 }
 
-.yui3-toolbar-button span span {
-    display: inline-block;
-    border: solid 1px #b6b6b6;
-    margin: 0;
-    *position: static;
-}
 
-.yui3-toolbar-button input {
-    border: none;
-    margin: 0;
-    padding: 4px 4px 4px 24px;
-    *overflow: visible; /* Remove superfluous padding for IE */
-    background: transparent url(../assets/node-focusmanager/icons.png) no-repeat;
-}
-
-#add-btn input {
-    background-position: 4px -102px;
-    *background-position: 4px -100px;
-}
-
-#edit-btn input {
-    background-position: 4px -78px;
-    *background-position: 4px -76px;
-}
-
-#print-btn input {
-    background-position: 4px -54px;
-    *background-position: 4px -52px;
-}
-
-#open-btn input {
-    background-position: 4px -30px;
-    *background-position: 4px -28px;
-}
-
-#delete-btn input {
-    background-position: 4px -126px;
-    *background-position: 4px -124px;
-}
-
-#save-btn input {
-    background-position: 4px -6px;
-    *background-position: 4px -4px;
-}
 

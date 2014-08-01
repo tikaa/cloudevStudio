@@ -6,18 +6,46 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+
+
+
+
 <script>
 $(document).ready(function(){
 
-
-$( "#popupID1" ).dialog({ autoOpen: false });
+var initialData = $.parseJSON('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda perera"}');
+var dataString = JSON.stringify(initialData);
+$( "#flowchartWindow1" ).data("mediatordata" , initialData);
 $( "#flowchartWindow1" ).dblclick(function() {
-  var positoin ="Info";
-$( "#popupID1" ).dialog( "open" );
+
+var $dialog = $("#popupID1")  
+               .dialog({
+                   autoOpen: false,
+                   modal: true,
+                   height: 500,
+                   width: 720,
+                   title: "Log Mediator"
+		   
+               });
+
+//$dialog.data('param_1', data1);
+//$dialog.attr('id', 'mydialogID');
+//$('#formid').submit();
+$("#myIframe").find('body').data("mykey", "configdataa");
+$('#myIframe').attr('src', "logMediatorForm.html?" + dataString);
+$dialog.dialog('open');
 });
+
+
+
+
+
+
+
 $( "#popupID2" ).dialog({ autoOpen: false });
 $( "#flowchartWindow2" ).dblclick(function() {
   var positoin ="Info";
@@ -34,6 +62,7 @@ $( "#flowchartWindow4" ).dblclick(function() {
 $( "#popupID4" ).dialog( "open" );
 });
 $( "#popupID5" ).dialog({ autoOpen: false });
+
 $( "#flowchartWindow5" ).dblclick(function() {
   var positoin ="Info";
 $( "#popupID5" ).dialog( "open" );
@@ -84,7 +113,11 @@ $( "#popupID5" ).dialog( "open" );
                 <div class="window" id="flowchartWindow4"style="background-image: url(./image.png); height: 45px; width: 45px;"></div>
 		<div class="window" id="flowchartWindow5"style="background-image: url(./image.png); height: 40px; width: 40px;"></div>
 
-		<wso2-log class="window" id="flowchartWindow1"style="background-image: url(./proxy.png); height: 45px; width: 45px;"></wso2-log>
+		<wso2-log class="window" id="flowchartWindow1"style="background-image: url(./proxy.png); height: 45px; width: 45px;">
+		<form action="logMediatorForm.html" method="post" target="myIframe" id="formid">
+		   <input type="hidden" name="foo" value="bar" />
+		</form>
+		</wso2-log>
 		<wso2-log></wso2-log>
 		<wso2-log></wso2-log>
             </div>
@@ -92,7 +125,10 @@ $( "#popupID5" ).dialog( "open" );
 
 <!--popup div-->
 
-<div id="popupID1" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 1</font></p></div>
+<div id="popupID1" title="Log Mediator">
+<iframe id="myIframe" scrolling="no" seamless="seamless" style="border: 0px; height: 450px; width: 450px;" ></iframe>
+</div>
+
 <div id="popupID2" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 2</font></p></div>
 <div id="popupID3" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 3</font></p></div>
 <div id="popupID4" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 4</font></p></div>
@@ -152,6 +188,7 @@ window.document.onload = function(e){
         <script src="demo.js"></script>
 
 
+</div>
     </body>
 
 
