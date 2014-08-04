@@ -18,25 +18,18 @@
 		var myJSON = JSON.parse(msg);                	
 		document.getElementById('changetry').innerHTML =myJSON[0].logLevel ;
 		//var x = "logLevel";
-		$("#popupID1").dialog("close");
+		
+		
+                $( "#popupID1" ).hide();
    }
   </script>
 
 
 
 <script>
-
-
 $(document).ready(function(){
+$( "#popupID1" ).hide();
 
-$("#popupID1").dialog({ autoOpen: false,
-	bgiframe: true,
-         height: 400,
-         width: 600,
-         modal: false,
-         draggable: true,
-         resizable: true,
-         position: 'center' });
  $("#flowchartWindow2").hover(function(){
     $('#flowchartWindow2').css('background-image','url(./image.png);');
   });
@@ -52,8 +45,7 @@ $( "#flowchartWindow1" ).data("mediatordata" , dataString);
 $( "#flowchartWindow1" ).dblclick(function() {
 $("#myIframe").find('body').data("mykey", "configdataa");
 $('#myIframe').attr('src', "logMediatorForm.html?" + dataString);
-$("#popupID1").dialog("open");
-
+$( "#popupID1" ).show();
 });
 
 $( "#popupID2" ).dialog({ autoOpen: false });
@@ -118,7 +110,7 @@ $( "#popupID5" ).dialog( "open" );
                 </div>
 	
                 <!--div class="window" id="flowchartWindow1"style="background-image: url(./image.png); height: 45px; width: 45px;"></div-->
-                <div class="window" id="flowchartWindow2"style="background-image: url(./proxy.png); height: 45px; width: 45px;"><table><tr><td id="changetry">TryingToChange</td></tr></table></div>
+                <div class="window" id="flowchartWindow2"style="background-image: url(./proxy.png); height: 45px; width: 45px;"><table><tr><td id="changetry">io</td></tr></table></div>
                 <div class="window" id="flowchartWindow3"style="background-image: url(./image.png); height: 80px; width: 80px;"></div>
                 <div class="window" id="flowchartWindow4"style="background-image: url(./image.png); height: 45px; width: 45px;"></div>
 		<div class="window" id="flowchartWindow5"style="background-image: url(./image.png); height: 40px; width: 40px;"></div>
@@ -135,7 +127,7 @@ $( "#popupID5" ).dialog( "open" );
 
 <!--popup div-->
 
-<div id="popupID1" title="Log Mediator" >
+<div id="popupID1" title="Log Mediator">
 <iframe id="myIframe"  scrolling="no" seamless="seamless" style="border: 0px; height: 450px; width: 450px;" ></iframe>
  
 </div>
