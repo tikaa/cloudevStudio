@@ -4,7 +4,7 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
-<script language="javascript">
+<script>
   $(document).ready(function(){
 
   //trying to access the parent
@@ -22,8 +22,7 @@ $("#propertyName0").val(logMediator.description);
 
 					$("#mybutton").click(function() { 
 					//creating the json
-				        //alert($(window).attr('name'));
- 					//jsonObj = [];		   
+ 					jsonObj = [];		   
 
 					var propertyName = $('#propertyName0').val();
 					var category = $('#mediator_log_category :selected').text();
@@ -33,13 +32,11 @@ $("#propertyName0").val(logMediator.description);
 					item ["category"] = category;
   					item ["properties"] = "myname";
 					item ["description"] = propertyName;
-					//jsonObj.push(item);
- 					
-					var myval= JSON.stringify(item)				       
+					jsonObj.push(item);
+					var myval= JSON.stringify(jsonObj)				       
 					//end
 					window.parent.myfunction(myval);
-					
-					//$( "#flowchartWindow1" ).data("mediatordata"
+								 	
 				});
 
  });
@@ -60,12 +57,12 @@ $("#propertyName0").val(logMediator.description);
                 <td>
                     <select id="mediator_log_category" name="mediator.log.category">
                         
-                        <option value="0">TRACE</option>
-                        <option value="1">DEBUG</option>
-                        <option value="2" selected="true">INFO</option>
-                        <option value="3">WARN</option>
-                        <option value="4">ERROR</option>
-                        <option value="5">FATAL</option>
+                        <option value="TRACE">TRACE</option>
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="INFO" selected="true">INFO</option>
+                        <option value="WARN">WARN</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="FATAL">FATAL</option>
                         
                     </select>
                 </td>

@@ -14,17 +14,19 @@
   function myfunction(msg){
    var name=msg;
 	//
-                alert("Received from child:    "+msg);
+               // alert("Received from child:    "+msg);
 		var myJSON = JSON.parse(msg);                	
-		document.getElementById('changetry').innerHTML =myJSON[0].logLevel ;
-		//var x = "logLevel";
+		document.getElementById('changetry').innerHTML =myJSON.logLevel ;
+		alert(msg);
+		$('#myIframe').attr('name',msg);
+		alert($('#myIframe').attr('name'));
 		$("#popupID1").dialog("close");
    }
   </script>
 
 
 
-<script>
+<script language="javascript">
 
 
 $(document).ready(function(){
@@ -51,7 +53,15 @@ var dataString = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "c
 $( "#flowchartWindow1" ).data("mediatordata" , dataString);
 $( "#flowchartWindow1" ).dblclick(function() {
 $("#myIframe").find('body').data("mykey", "configdataa");
+
+if($('#myIframe').attr('name')==null){
 $('#myIframe').attr('src', "logMediatorForm.html?" + dataString);
+}else{
+
+$('#myIframe').attr('src', "logMediatorForm.html?" + $('#myIframe').attr('name'));
+
+}
+//$('#myIframe').attr('name', dataString);
 $("#popupID1").dialog("open");
 
 });
