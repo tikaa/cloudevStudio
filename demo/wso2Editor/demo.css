@@ -121,13 +121,15 @@ section#sec_main {
 	background: #707070;
 
 }
+#popupID2{
 
-#popingUp{
-height:400px;
-width:100%;
-position:absolute;
+	position: relative;
+	width: 1000px;
+	height: 200px;
+	background: #66CCFF;
 
 }
+
 
 
 

@@ -11,16 +11,27 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <script language="javascript">
-  function myfunction(msg){
+  function logmfunction(msg){
    var name=msg;
 	//
                // alert("Received from child:    "+msg);
 		var myJSON = JSON.parse(msg);                	
-		document.getElementById('changetry').innerHTML =myJSON.logLevel ;
+		document.getElementById('try1').innerHTML =myJSON.logLevel ;
 		alert(msg);
-		$('#myIframe').attr('name',msg);
-		alert($('#myIframe').attr('name'));
+		$('#LogMedIframe').attr('name',msg);
+		//alert($('#LogMedIframe').attr('name'));
 		$("#popupID1").dialog("close");
+   }
+function sendmfunction(msg){
+   var name=msg;
+	//
+               // alert("Received from child:    "+msg);
+		var myJSON = JSON.parse(msg);                	
+		document.getElementById('try2').innerHTML =myJSON.sendType ;
+		//alert(myJSON.sendType);
+		$('#SendMedIframe').attr('name',msg);
+		//alert($('#SendMedIframe').attr('name'));
+		$("#popupID2").dialog("close");
    }
   </script>
 
@@ -30,63 +41,64 @@
 
 
 $(document).ready(function(){
+//defining default values for the mediators
+var logMData = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda perera"}'));
+var sendMData = $.parseJSON(JSON.stringify('{"sendType":0, "separator":"- ", "category":1, "properties":[], "description":"sohani weerasinghe"}'));
+var dropMData = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda perera"}'));
+var propertyMData = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda perera"}'));
+
 
 $("#popupID1").dialog({ autoOpen: false,
 	bgiframe: true,
          height: 400,
-         width: 600,
+         width: 600,	 
          modal: false,
          draggable: true,
          resizable: true,
-         position: 'center' });
- $("#flowchartWindow2").hover(function(){
-    $('#flowchartWindow2').css('background-image','url(./image.png);');
-  });
+         position: [400,350] });
+$("#popupID2").dialog({ autoOpen: false,
+	bgiframe: true,
+         height: 400,
+         width: 600,
+	 bottom:200,
+         modal: false,
+         draggable: true,
+         resizable: true,
+         position: [400,350]});
 
-$('.flowchartWindow2').on('mouseover', function() {
-    $(this).animate({width: '300px'});
-});
-  
+	
+		
+		$( "#flowchartWindow1" ).dblclick(function() {
+		if($('#LogMedIframe').attr('name')==null) {$('#LogMedIframe').attr('name',logMData);	}	
+		$('#LogMedIframe').attr('src', "logMediatorForm.html?" + $('#LogMedIframe').attr('name'));
+		
+		$("#popupID1").dialog("open");
+		});
 
-var dataString = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda perera"}'));
 
-$( "#flowchartWindow1" ).data("mediatordata" , dataString);
-$( "#flowchartWindow1" ).dblclick(function() {
-$("#myIframe").find('body').data("mykey", "configdataa");
-
-if($('#myIframe').attr('name')==null){
-$('#myIframe').attr('src', "logMediatorForm.html?" + dataString);
-}else{
-
-$('#myIframe').attr('src', "logMediatorForm.html?" + $('#myIframe').attr('name'));
-
-}
-//$('#myIframe').attr('name', dataString);
-$("#popupID1").dialog("open");
-
-});
-
-$( "#popupID2" ).dialog({ autoOpen: false });
 $( "#flowchartWindow2" ).dblclick(function() {
-  var positoin ="Info";
+if($('#SendMedIframe').attr('name')==null) {$('#SendMedIframe').attr('name',sendMData);	}
+
+$('#SendMedIframe').attr('src', "sendMediatorForm.html?" + $('#SendMedIframe').attr('name'));
+
 $( "#popupID2" ).dialog( "open" );
 });
-$( "#popupID3" ).dialog({ autoOpen: false });
-$( "#flowchartWindow3" ).dblclick(function() {
-  var positoin ="Info";
-$( "#popupID3" ).dialog( "open" );
-});
+		$( "#popupID3" ).dialog({ autoOpen: false });
+		$( "#flowchartWindow3" ).dblclick(function() {
+		  var positoin ="Info";
+		$( "#popupID3" ).dialog( "open" );
+		});
+
 $( "#popupID4" ).dialog({ autoOpen: false });
 $( "#flowchartWindow4" ).dblclick(function() {
   var positoin ="Info";
 $( "#popupID4" ).dialog( "open" );
 });
-$( "#popupID5" ).dialog({ autoOpen: false });
-
-$( "#flowchartWindow5" ).dblclick(function() {
-  var positoin ="Info";
-$( "#popupID5" ).dialog( "open" );
-});
+		$( "#popupID5" ).dialog({ autoOpen: false });
+		$( "#flowchartWindow5" ).dblclick(function() {
+		  var positoin ="Info";
+		$( "#popupID5" ).dialog( "open" );
+		});
 });
 </script>
 
@@ -118,7 +130,7 @@ $( "#popupID5" ).dialog( "open" );
             <div class="demo flowchart-demo" id="flowchart-demo">
               
 		<div class="explanation">
-                    <i class="fa fa-info-circle"></i>
+                    <!--<i class="fa fa-info-circle"></i>-->
                     <h4>FLOWCHART</h4>
                     <p>Nodes are connected with the Flowchart connector.</p>
                     <p>Hover over connections to highlight them, click to delete. </p>
@@ -128,15 +140,15 @@ $( "#popupID5" ).dialog( "open" );
                 </div>
 	
                 <!--div class="window" id="flowchartWindow1"style="background-image: url(./image.png); height: 45px; width: 45px;"></div-->
-                <div class="window" id="flowchartWindow2"style="background-image: url(./proxy.png); height: 45px; width: 45px;"><table><tr><td id="changetry">TryingToChange</td></tr></table></div>
+                <div class="window" id="flowchartWindow2"style="background-image: url(./proxy.png); height: 45px; width: 45px;"><table><tr><td id="try2">TryingToChange</td></tr></table></div>
                 <div class="window" id="flowchartWindow3"style="background-image: url(./image.png); height: 80px; width: 80px;"></div>
                 <div class="window" id="flowchartWindow4"style="background-image: url(./image.png); height: 45px; width: 45px;"></div>
 		<div class="window" id="flowchartWindow5"style="background-image: url(./image.png); height: 40px; width: 40px;"></div>
 
 		<wso2-log class="window" id="flowchartWindow1"style="background-image: url(./proxy.png); height: 45px; width: 45px;">
-		<form action="logMediatorForm.html" method="post" target="myIframe" id="formid">
+		<form action="logMediatorForm.html" method="post" target="LogMedIframe" id="formid">
 		   <input type="hidden" name="foo" value="bar" id="changetry1" />
-		</form>
+		</form><table><tr><td id="try1">TryingToChange</td></tr></table>
 		</wso2-log>
 		<wso2-log></wso2-log>
 		<wso2-log></wso2-log>
@@ -146,14 +158,15 @@ $( "#popupID5" ).dialog( "open" );
 <!--popup div-->
 
 <div id="popupID1" title="Log Mediator" >
-<iframe id="myIframe"  scrolling="no" seamless="seamless" style="border: 0px; height: 450px; width: 450px;" ></iframe>
+<iframe id="LogMedIframe"  scrolling="no" seamless="seamless" style="border: 0px; height: 450px; width: 450px;" ></iframe>
  
 </div>
 
+<div id="popupID2" title="Log Mediator" >
+<iframe id="SendMedIframe"  scrolling="no" seamless="seamless" style="border: 0px; height: 450px; width: 450px;" ></iframe>
+ 
+</div>
 
-
-
-<div id="popupID2" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 2</font></p></div>
 <div id="popupID3" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 3</font></p></div>
 <div id="popupID4" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 4</font></p></div>
 <div id="popupID5" title="Hello  World!"><p><font face="Georgia" size="4">this is flowchart window 5</font></p></div>

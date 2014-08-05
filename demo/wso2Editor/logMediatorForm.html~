@@ -24,22 +24,22 @@ $("#propertyName0").val(logMediator.description);
 					//creating the json
 				        //alert($(window).attr('name'));
  					//jsonObj = [];		   
-
+					
 					var propertyName = $('#propertyName0').val();
-					var category = $('#mediator_log_category :selected').text();
-					var logLevel =  $('#mediator_log_log_level :selected').text();
+					var category = $('#mediator_log_category :selected').val();
+					var logLevel =  $('#mediator_log_log_level :selected').val();
+					
 					item = {}
-					item ["logLevel"] = logLevel;
+					item["separator"]="-";
 					item ["category"] = category;
   					item ["properties"] = "myname";
 					item ["description"] = propertyName;
+					item ["logLevel"] = logLevel;
 					//jsonObj.push(item);
- 					
-					var myval= JSON.stringify(item)				       
-					//end
-					window.parent.myfunction(myval);
+					var myval= JSON.stringify(item)	
+					window.parent.logmfunction(myval);
+						
 					
-					//$( "#flowchartWindow1" ).data("mediatordata"
 				});
 
  });
@@ -75,10 +75,10 @@ $("#propertyName0").val(logMediator.description);
                 <td>
                     <select id="mediator_log_log_level" name="mediator.log.log_level">
                         
-                        <option value="3">Full</option>
+                        <option value="0">Full</option>
                         <option value="1" selected="true">Simple</option>
                         <option value="2">Headers</option>
-                        <option value="0">Custom</option>
+                        <option value="3">Custom</option>
                         
                     </select>
                 </td>

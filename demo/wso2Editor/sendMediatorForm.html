@@ -12,30 +12,29 @@
   //alert(sPageURL);
  sPageURL = sPageURL.replace(/%22/g, '"');
  sPageURL = sPageURL.replace(/%20/g, ' ');
- var logMediator = $.parseJSON(sPageURL);
+ var sendMediator = $.parseJSON(sPageURL);
 				
 				
-$("#mediator_log_log_separator").val(logMediator.separator);
-$('#mediator_log_category').prop("selectedIndex",logMediator.category);
-$('#mediator_log_log_level').prop("selectedIndex",logMediator.logLevel);
-$("#propertyName0").val(logMediator.description);
+$("#mediator_send_send_separator").val(sendMediator.separator);
+$('#mediator_send_category').prop("selectedIndex",sendMediator.category);
+$('#mediator_send_send_level').prop("selectedIndex",sendMediator.sendType);
+$("#propertyName0").val(sendMediator.description);
 
 					$("#mybutton").click(function() { 
 					//creating the json
- 					jsonObj = [];		   
 
 					var propertyName = $('#propertyName0').val();
-					var category = $('#mediator_log_category :selected').text();
-					var logLevel =  $('#mediator_log_log_level :selected').text();
+					var category = $('#mediator_send_category :selected').val();
+					var sendType =  $('#mediator_send_send_level :selected').val();
 					item = {}
-					item ["logLevel"] = logLevel;
+					item ["sendType"] = sendType;
 					item ["category"] = category;
   					item ["properties"] = "myname";
 					item ["description"] = propertyName;
-					jsonObj.push(item);
-					var myval= JSON.stringify(jsonObj)				       
+					
+					var myval= JSON.stringify(item)				       
 					//end
-					window.parent.myfunction(myval);
+					window.parent.sendmfunction(myval);
 								 	
 				});
 
@@ -55,14 +54,14 @@ $("#propertyName0").val(logMediator.description);
             <tbody><tr>
                 <td>Log Category</td>
                 <td>
-                    <select id="mediator_log_category" name="mediator.log.category">
+                    <select id="mediator_send_category" name="mediator.send.category">
                         
-                        <option value="TRACE">TRACE</option>
-                        <option value="DEBUG">DEBUG</option>
-                        <option value="INFO" selected="true">INFO</option>
-                        <option value="WARN">WARN</option>
-                        <option value="ERROR">ERROR</option>
-                        <option value="FATAL">FATAL</option>
+                        <option value="0">TRACE</option>
+                        <option value="1">DEBUG</option>
+                        <option value="2" selected="true">INFO</option>
+                        <option value="3">WARN</option>
+                        <option value="4">ERROR</option>
+                        <option value="5">FATAL</option>
                         
                     </select>
                 </td>
@@ -70,12 +69,12 @@ $("#propertyName0").val(logMediator.description);
             <tr>
                 <td>Log level</td>
                 <td>
-                    <select id="mediator_log_log_level" name="mediator.log.log_level">
+                    <select id="mediator_send_send_level" name="mediator.send.send_level">
                         
-                        <option value="3">Full</option>
+                        <option value="0">Full</option>
                         <option value="1" selected="true">Simple</option>
                         <option value="2">Headers</option>
-                        <option value="0">Custom</option>
+                        <option value="3">Custom</option>
                         
                     </select>
                 </td>
@@ -83,7 +82,7 @@ $("#propertyName0").val(logMediator.description);
             <tr>
                 <td>Log Separator</td>
                 <td>
-                    <input type="text" id="mediator_log_log_separator" name="mediator.log.log_separator" ></input>
+                    <input type="text" id="mediator_send_send_separator" name="mediator.send.send_separator" ></input>
                 </td>
             </tr>
         </tbody></table>
