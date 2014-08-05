@@ -76,7 +76,7 @@ jsPlumb.ready(function() {
 			for (var j = 0; j < targetAnchors.length; j++) {
 				var targetUUID = toId + targetAnchors[j];
 				instance.addEndpoint("flowchart" + toId, targetEndpoint, { anchor:targetAnchors[j], uuid:targetUUID });						
-			}
+			}//alert("icamehere!!!");
 		};
 
 	// suspend drawing and initialise.
@@ -177,14 +177,53 @@ var CurElement = null;
           if (e.keyCode == 46 /*the delete key*/ && CurElement != null)
           {
               CurElement.remove();
+		var id = CurElement.attr('id');
               //Run other code here when the element 'CurElement' is deleted
-              instance.detachAllConnections();
+              jsPlumb.detachAllConnections(id);
               
-              CurElement = null; //clear, that element doesn't exist anymore
+              CurElement = null; //clear, that element doesn't exist anymore  add-btn
           }
       });
 
-//popup
+//adding new elements into canvas
+
+//adding new Divs
+var divID ="flowchartWindow";
+var i =4;
+function AddDiv() {
+            i++;
+            var Div = $('<div>', { id:"flowchartWindow"+i }, 
+                                 { class: 'window _jsPlumb_endpoint_anchor_ jsplumb-draggable' })
+                      .css(
+                                 { height: '45px', 
+                                   width: '45px',
+				   left: '400px',
+				   top: '100px',
+				   'background-image':'url(./proxy.png)'
+                                   
+                                 }
+                          ).appendTo('body');
+            jsPlumb.draggable($(Div));
+            $(Div).addClass('window');
+		$('#flowchart-demo').append($(Div)) 
+		_addEndpoints("Window"+i, ["RightMiddle"], ["LeftMiddle"]);
+		var a = i-1;	
+		jsPlumb.connect({
+		    source:"flowchartWindow"+a, 
+		    target:"flowchartWindow"+i,
+		    anchors:["Right", "Left" ],
+		    endpoint:"Rectangle",
+		    endpointStyle:{ fillStyle: "yellow" }
+			});
+		
+        }
+
+$("#add-btn").bind('click', function () {
+         //add a new element and create an inrementel id to give a unique id to the element
+		AddDiv();
+      });
+
+
 
 	
 });

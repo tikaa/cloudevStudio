@@ -67,17 +67,17 @@ $("#popupID2").dialog({ autoOpen: false,
          position: [400,350]});
 
 	
-		$( "#flowchartWindow1" ).data("mediatordata" , logMData);
+		
 		$( "#flowchartWindow1" ).dblclick(function() {
-		$('#LogMedIframe').attr('name',logMData);		
+		if($('#LogMedIframe').attr('name')==null) {$('#LogMedIframe').attr('name',logMData);	}	
 		$('#LogMedIframe').attr('src', "logMediatorForm.html?" + $('#LogMedIframe').attr('name'));
 		
 		$("#popupID1").dialog("open");
 		});
 
-$( "#flowchartWindow2" ).data("mediatordata" , sendMData);
+
 $( "#flowchartWindow2" ).dblclick(function() {
-('SendMedIframe').attr('name',sendMData)
+if($('#SendMedIframe').attr('name')==null) {$('#SendMedIframe').attr('name',sendMData);	}
 
 $('#SendMedIframe').attr('src', "sendMediatorForm.html?" + $('#SendMedIframe').attr('name'));
 
@@ -99,6 +99,9 @@ $( "#popupID4" ).dialog( "open" );
 		  var positoin ="Info";
 		$( "#popupID5" ).dialog( "open" );
 		});
+
+
+      
 });
 </script>
 
@@ -143,7 +146,7 @@ $( "#popupID4" ).dialog( "open" );
                 <div class="window" id="flowchartWindow2"style="background-image: url(./proxy.png); height: 45px; width: 45px;"><table><tr><td id="try2">TryingToChange</td></tr></table></div>
                 <div class="window" id="flowchartWindow3"style="background-image: url(./image.png); height: 80px; width: 80px;"></div>
                 <div class="window" id="flowchartWindow4"style="background-image: url(./image.png); height: 45px; width: 45px;"></div>
-		<div class="window" id="flowchartWindow5"style="background-image: url(./image.png); height: 40px; width: 40px;"></div>
+		<!--<div class="window" id="flowchartWindow5"style="background-image: url(./image.png); height: 40px; width: 40px;"></div>-->
 
 		<wso2-log class="window" id="flowchartWindow1"style="background-image: url(./proxy.png); height: 45px; width: 45px;">
 		<form action="logMediatorForm.html" method="post" target="LogMedIframe" id="formid">
