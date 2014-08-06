@@ -73,17 +73,14 @@ prototype: Object.create(HTMLDivElement.prototype) });
     $("#jsPlumbContainer").droppable({
         drop: function (ev, ui) {
 
-	x= x + 100;y=y  + 200;
+	x= x + 50;y=y  + 50;
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
 
                 var element = $(ui.draggable).clone();
                 var type = element.attr('id');
-                var objName = "dragged" +type+ editorItemCounter;
-
-        	var newPosX =  $(this).offset().left;
-        	var newPosY =  $(this).offset().top;
-		alert(newPosX+"..and .."+newPosY);
+                var objName = "dragged" +type+ editorItemCounter;        	
+		
 		element.css({'top':x, 'left' : y });
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
@@ -123,21 +120,25 @@ prototype: Object.create(HTMLDivElement.prototype) });
 $(document).keydown(function(e) {
          //alert(e.which); //run to find the keycode of the key you want, don't use backspace, that is used to go back in browser history
          if (e.keyCode == 46  && CurElement != null)
-         {    var connectionList = jsPlumb.getAllConnections(id);
-               
+         {    var connectionList = jsPlumb.getAllConnections();
+              
 		for (var key in connectionList){
 			//alert("Iterating :")
     			if(connectionList[key].sourceId==CurElement.attr('id')){ CurElementisSource =connectionList[key].targetId }
 			if(connectionList[key].targetId==CurElement.attr('id')){ CurElementisTarget =connectionList[key].sourceId }
 			//alert(i +" and "+ l);
 		}		
-		
+		if(CurElement.attr('id')==lastItem.attr('id') ){lastItem = $("#"+CurElementisTarget)}
 		jsPlumb.detachAllConnections(id);
 		CurElement.remove();
                
 		
 	      if(CurElementisTarget!= null && CurElementisSource!=null )
-	      { jsPlumb.connect({source:CurElementisTarget, target:CurElementisSource,  anchors:["Right", "Left" ]});}
+	      { 
+		jsPlumb.connect({source:CurElementisTarget, target:CurElementisSource,  anchors:["Right", "Left" ]});
+		CurElementisSource = null;
+		CurElementisTarget= null;
+		}
 		
                CurElement = null; //clear, that element doesn't exist anymore
          }
