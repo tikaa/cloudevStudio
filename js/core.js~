@@ -7,7 +7,9 @@ var lastItem= null;
 var dataString = null;
 var CurElement = null;
 var id = null;
-
+var CurElementisSource =null;
+var CurElementisTarget = null;
+var x =0; var y=0;
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
 });
@@ -71,20 +73,25 @@ prototype: Object.create(HTMLDivElement.prototype) });
     $("#jsPlumbContainer").droppable({
         drop: function (ev, ui) {
 
-
+	x= x + 100;y=y  + 200;
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
 
                 var element = $(ui.draggable).clone();
                 var type = element.attr('id');
-                var objName = "dragged" + type + editorItemCounter;
+                var objName = "dragged" +type+ editorItemCounter;
 
+        	var newPosX =  $(this).offset().left;
+        	var newPosY =  $(this).offset().top;
+		alert(newPosX+"..and .."+newPosY);
+		element.css({'top':x + 100, 'left' : y + 200});
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
-                element.removeClass("ui-draggable");
+                element.removeClass("ui-draggable");		
                 element.addClass("draggable");
-                //element.click(selectDeleteFunction); //since this makes troubles
+                element.click(selectDeleteFunction); //since this makes troubles
 		element.dblclick(openPopup);
+		
 		setData(element, type);
                 //element.data('jsonConfig', dataString);
 
@@ -104,7 +111,9 @@ prototype: Object.create(HTMLDivElement.prototype) });
                 }
                 lastItem = $("#"+objName);
             }
-        }
+        },
+		tolerance: "pointer" 
+			
     });
 
 
@@ -114,35 +123,24 @@ prototype: Object.create(HTMLDivElement.prototype) });
 $(document).keydown(function(e) {
          //alert(e.which); //run to find the keycode of the key you want, don't use backspace, that is used to go back in browser history
          if (e.keyCode == 46  && CurElement != null)
-         {
-               //alert("Deleting Element" +id);
-               jsPlumb.detachAllConnections(id);
+         {    var connectionList = jsPlumb.getAllConnections(id);
                
-               CurElement.remove();
-                     CurElement = null; //clear, that element doesn't exist anymore
+		for (var key in connectionList){
+			//alert("Iterating :")
+    			if(connectionList[key].sourceId==CurElement.attr('id')){ CurElementisSource =connectionList[key].targetId }
+			if(connectionList[key].targetId==CurElement.attr('id')){ CurElementisTarget =connectionList[key].sourceId }
+			//alert(i +" and "+ l);
+		}		
+		
+		jsPlumb.detachAllConnections(id);
+		CurElement.remove();
+               
+		
+	      if(CurElementisTarget!= null && CurElementisSource!=null )
+	      { jsPlumb.connect({source:CurElementisTarget, target:CurElementisSource,  anchors:["Right", "Left" ]});}
+		
+               CurElement = null; //clear, that element doesn't exist anymore
          }
 });
 
-function setData(element, type) {
 
-if (type == 'logMediator') {
-   var logString = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda aaa"}'));
-   element.data('jsonConfig' , logString);
-} 
-if (type == 'dropMediator') {
-   var logString = $.parseJSON(JSON.stringify('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda dropeedd"}'));
-   element.data('jsonConfig' , logString);
-} 
-
-}
-
-function openPopup() {
-var xmlConfig = $(this).attr('id');
-
-if(xmlConfig.indexOf('logMediator') != -1){
-   openLogMediatorPopup(xmlConfig); 
-}
-
-//if (propertyMediator)
-//openPropertyMediatorPopup(xmlConfig);
-} 
