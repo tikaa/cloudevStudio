@@ -9,7 +9,7 @@ var CurElement = null;
 var id = null;
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =100; var y=0;
+var x =100; var y=0;var CurY = null;
 var connectionList = jsPlumb.getAllConnections();
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
@@ -41,6 +41,10 @@ $(document).ready(function () {
 
 var logMediator = document.registerElement('wso2-log', {
 prototype: Object.create(HTMLDivElement.prototype) }); 
+		 $(document).mousemove(function(e){
+		    CurY= e.pageX;
+			console.log(CurY);
+		  });
 
 	
     $(".draggableIcon").draggable({
@@ -90,7 +94,7 @@ prototype: Object.create(HTMLDivElement.prototype) });
                 var type = element.attr('id');
                 var objName = "dragged" +type+ editorItemCounter;        	
 		// alert(x+" and  "+y+"  ");
-		element.css({'top':x, 'left' : y});
+		element.css({'top':x, 'left' : CurY-400});
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
                 element.removeClass("ui-draggable");		
@@ -144,7 +148,10 @@ $(document).keydown(function(e) {
 			//alert(i +" and "+ l);
 		}
 		
-		if(CurElement.attr('id')==lastItem.attr('id') ){lastItem = $("#"+CurElementisTarget)}
+		if(CurElement.attr('id')==lastItem.attr('id') ){
+			lastItem = $("#"+CurElementisTarget);
+			y = y - 100;
+		}
 		jsPlumb.detachAllConnections(id);
 		CurElement.remove();
                

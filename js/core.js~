@@ -9,7 +9,7 @@ var CurElement = null;
 var id = null;
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =100; var y=0;
+var x =100; var y=0;var CurY = null;
 var connectionList = jsPlumb.getAllConnections();
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
@@ -41,52 +41,12 @@ $(document).ready(function () {
 
 var logMediator = document.registerElement('wso2-log', {
 prototype: Object.create(HTMLDivElement.prototype) }); 
+		 $(document).mousemove(function(e){
+		    CurY= e.pageX;
+			console.log(CurY);
+		  });
 
-	//getting the connections and allowing to delete the connections and redraw
-	jsPlumb.bind('connection',function(info,ev){
-    		var con=info.connection;   //this is the new connection
-	});
-
-init = function(connection) {			
-		//connection.getOverlay("label").setLabel(connection.sourceId.substring(15) + "-" + connection.targetId.substring(15));
-		connection.bind("editCompleted", function(o) {
-			if (typeof console != "undefined")
-				console.log("connection edited. path is now ", o.path);
-		});
-	};
-
-var instance = jsPlumb.getInstance({
-		// default drag options
-		DragOptions : { cursor: 'pointer', zIndex:2000 },
-		// the overlays to decorate each connection with.  note that the label overlay uses a function to generate the label text; in this
-		// case it returns the 'labelText' member that we set on each connection in the 'init' method below.
-		ConnectionOverlays : [
-			[ "Arrow", { location:1 } ],
-		],
-		Container:"flowchart-demo"
-	});
-
-instance.bind("connection", function(connInfo, originalEvent) { 
-			init(connInfo.connection);
-		});
-
-instance.bind("click", function(conn, originalEvent) {
-			if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
-				jsPlumb.detach(conn); 
-		});	
-		
-		instance.bind("connectionDrag", function(connection) {
-			console.log("connection " + connection.id + " is being dragged. suspendedElement is ", connection.suspendedElement, " of type ", connection.suspendedElementType);
-		});		
-		
-		instance.bind("connectionDragStop", function(connection) {
-			console.log("connection " + connection.id + " was dragged");
-		});
-
-		instance.bind("connectionMoved", function(params) {
-			console.log("connection " + params.connection.id + " was moved");
-		});
-	//end
+	
     $(".draggableIcon").draggable({
         helper: 'clone',
         containment: 'jsPlumbContainer',
@@ -134,7 +94,7 @@ instance.bind("click", function(conn, originalEvent) {
                 var type = element.attr('id');
                 var objName = "dragged" +type+ editorItemCounter;        	
 		// alert(x+" and  "+y+"  ");
-		element.css({'top':x, 'left' : y});
+		element.css({'top':x, 'left' : CurY-400});
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
                 element.removeClass("ui-draggable");		
@@ -188,7 +148,10 @@ $(document).keydown(function(e) {
 			//alert(i +" and "+ l);
 		}
 		
-		if(CurElement.attr('id')==lastItem.attr('id') ){lastItem = $("#"+CurElementisTarget)}
+		if(CurElement.attr('id')==lastItem.attr('id') ){
+			lastItem = $("#"+CurElementisTarget);
+			y = y - 100;
+		}
 		jsPlumb.detachAllConnections(id);
 		CurElement.remove();
                
