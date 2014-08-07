@@ -9,7 +9,8 @@ var CurElement = null;
 var id = null;
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =0; var y=0;
+var x =100; var y=0;
+var connectionList = jsPlumb.getAllConnections();
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
 });
@@ -41,7 +42,7 @@ $(document).ready(function () {
 var logMediator = document.registerElement('wso2-log', {
 prototype: Object.create(HTMLDivElement.prototype) }); 
 
-
+	
     $(".draggableIcon").draggable({
         helper: 'clone',
         containment: 'jsPlumbContainer',
@@ -69,19 +70,27 @@ prototype: Object.create(HTMLDivElement.prototype) });
 //            });
         }
     });
+
+	/* $('#jsPlumbContainer').mousemove(function(e){
+        x = e.pageX - this.offsetLeft;
+         y = e.pageY - this.offsetTop;
+       console.log( "page offsets: "+e.pageX+" and  "+e.pageY+"  ");
+	console.log( "page X and Y: "+x+" and  "+y+"  ");
+	console.log( "offsets: "+this.offsetLeft+" and  "+this.offsetTop+"  ");
+    });*/
     //Make element droppable
     $("#jsPlumbContainer").droppable({
         drop: function (ev, ui) {
-
-	x= x + 50;y=y  + 50;
+		
+	y= y + 100;
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
 
                 var element = $(ui.draggable).clone();
                 var type = element.attr('id');
                 var objName = "dragged" +type+ editorItemCounter;        	
-		
-		element.css({'top':x, 'left' : y });
+		// alert(x+" and  "+y+"  ");
+		element.css({'top':x, 'left' : y});
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
                 element.removeClass("ui-draggable");		
@@ -103,7 +112,14 @@ prototype: Object.create(HTMLDivElement.prototype) });
                     jsPlumb.connect({
                         source:lastItem,
                         target:$("#"+objName),
-                        anchors:["Right", "Left" ]
+                        anchors:["Right", "Left" ],
+			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    	connector: ["Flowchart", { curviness: 100}],
+                    	connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    		}],
+                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
                     });
                 }
                 lastItem = $("#"+objName);
@@ -120,14 +136,14 @@ prototype: Object.create(HTMLDivElement.prototype) });
 $(document).keydown(function(e) {
          //alert(e.which); //run to find the keycode of the key you want, don't use backspace, that is used to go back in browser history
          if (e.keyCode == 46  && CurElement != null)
-         {    var connectionList = jsPlumb.getAllConnections();
-              
+         {   
 		for (var key in connectionList){
-			//alert("Iterating :")
+			
     			if(connectionList[key].sourceId==CurElement.attr('id')){ CurElementisSource =connectionList[key].targetId }
 			if(connectionList[key].targetId==CurElement.attr('id')){ CurElementisTarget =connectionList[key].sourceId }
 			//alert(i +" and "+ l);
-		}		
+		}
+		
 		if(CurElement.attr('id')==lastItem.attr('id') ){lastItem = $("#"+CurElementisTarget)}
 		jsPlumb.detachAllConnections(id);
 		CurElement.remove();
@@ -135,7 +151,13 @@ $(document).keydown(function(e) {
 		
 	      if(CurElementisTarget!= null && CurElementisSource!=null )
 	      { 
-		jsPlumb.connect({source:CurElementisTarget, target:CurElementisSource,  anchors:["Right", "Left" ]});
+		jsPlumb.connect({source:CurElementisTarget, target:CurElementisSource,  anchors:["Right", "Left" ],paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    connector: ["Flowchart", { curviness: 63}],
+                    connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    }],
+                    hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }});
 		CurElementisSource = null;
 		CurElementisTarget= null;
 		}
