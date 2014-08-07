@@ -80,3 +80,15 @@ body {
     color: #ffffff;
     cursor: move;
 }
+
+.textareaCode {
+ font-family: consolas,"courier new",monospace;
+ font-size:14px;
+ height:99%;
+ width:99%;
+ border:1px solid #d3d3d3;
+ border-radius:4px;
+ margin:0px;
+ padding:4px;
+ resize: none;
+}

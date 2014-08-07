@@ -22,7 +22,6 @@ jsPlumb.bind("ready", function () {
 });
 
 
-
 function selectDeleteFunction() {
 //alert("selectDeleteFunction");
   if (CurElement != null)
@@ -35,20 +34,35 @@ function selectDeleteFunction() {
 
 
 
-
 function initJsPlumb(container) {
     jsPlumb.setContainer(container);
 
 }
 
+
+
 $(document).ready(function () {
+
+x2js = new X2JS();
+
+ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+     var tabName = $(e.target).html();
+     if ( tabName == 'Source') {
+         activateSourceView();
+       } else {
+         activateDesignView();
+       }
+ });
+
 
 var logMediator = document.registerElement('wso2-log', {
 prototype: Object.create(HTMLDivElement.prototype) }); 
-		 $(document).mousemove(function(e){// to get the cursor point to drop an icon
+
+$(document).mousemove(function(e){// to get the cursor point to drop an icon
 		    CurY= e.pageX;			
 		  });
 // trying to select the connectors
+
 jsPlumb.bind("click", function(conn, originalEvent) {
 			if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
 				   detachedSourceId = conn.sourceId;
@@ -57,7 +71,7 @@ jsPlumb.bind("click", function(conn, originalEvent) {
 				   detachedTarget = document.getElementById(detachedTargetId);
 				   latestDeleteSourceLeft = detachedSource.offsetLeft;
 				   latestDeleteTaLeftrget = detachedTarget.offsetLeft;
-				   jsPlumb.detach(conn); 
+				   jsPlumb.detach(conn);
 		});	
 //the end
 
@@ -99,20 +113,26 @@ jsPlumb.bind("click", function(conn, originalEvent) {
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
 
-                var element = $(ui.draggable).clone();
-                var type = element.attr('id');
-                var objName = "dragged" +type+ editorItemCounter;        	
-		
-		element.css({'top':x, 'left' : yLoc});
+                var element1 = $(ui.draggable).clone();
+                element1.removeClass("draggableIcon");
+                element1.removeClass("ui-draggable");
+                //var imgsrc = "url(" + element1.attr('src') + ") no-repeat";
+                //element.css("background",  imgsrc );
+
+                var type = element1.attr('id');
+                var objName = "dragged" +type+ editorItemCounter;
+
+                var element = $("<div></div>");
+                element.append(element1);
+		        element.css({'top':x, 'left' : yLoc});
                 element.attr('id', objName);
-                element.removeClass("draggableIcon");
-                element.removeClass("ui-draggable");		
+                //element.removeClass("draggableIcon");
+                //element.removeClass("ui-draggable");
                 element.addClass("draggable");
                 element.click(selectDeleteFunction); //since this makes troubles
-		element.dblclick(openPopup);
+		        element.dblclick(openPopup);
 		
-		setData(element, type);
-                //element.data('jsonConfig', dataString);
+		        setData(element, type);
 
                 element.addClass("wso2log_style");
                 $(this).append(element);
@@ -208,5 +228,6 @@ $(document).keydown(function(e) {
                CurElement = null; //clear, that element doesn't exist anymore
          }
 });
+
 
 
