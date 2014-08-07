@@ -9,8 +9,14 @@ var CurElement = null;
 var id = null;
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =100; var y=0;var CurY = null;
+var x =100; var CurY = null;
 var connectionList = jsPlumb.getAllConnections();
+var detachedSource = null;
+var detachedTarget = null;
+var detachedSourceId = null;
+var detachedTargetId = null;
+var latestDeleteSourceLeft = null;
+var latestDeleteTaLeftrget = null;
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
 });
@@ -32,19 +38,28 @@ function selectDeleteFunction() {
 
 function initJsPlumb(container) {
     jsPlumb.setContainer(container);
-//    jsPlumb.draggable($(".draggable"), {
-//        containment:$("#jsPlumbContainer")
-//    });
+
 }
 
 $(document).ready(function () {
 
 var logMediator = document.registerElement('wso2-log', {
 prototype: Object.create(HTMLDivElement.prototype) }); 
-		 $(document).mousemove(function(e){
-		    CurY= e.pageX;
-			console.log(CurY);
+		 $(document).mousemove(function(e){// to get the cursor point to drop an icon
+		    CurY= e.pageX;			
 		  });
+// trying to select the connectors
+jsPlumb.bind("click", function(conn, originalEvent) {
+			if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
+				   detachedSourceId = conn.sourceId;
+			           detachedTargetId = conn.targetId;
+				   detachedSource = document.getElementById(detachedSourceId);
+				   detachedTarget = document.getElementById(detachedTargetId);
+				   latestDeleteSourceLeft = detachedSource.offsetLeft;
+				   latestDeleteTaLeftrget = detachedTarget.offsetLeft;
+				   jsPlumb.detach(conn); 
+		});	
+//the end
 
 	
     $(".draggableIcon").draggable({
@@ -75,26 +90,20 @@ prototype: Object.create(HTMLDivElement.prototype) });
         }
     });
 
-	/* $('#jsPlumbContainer').mousemove(function(e){
-        x = e.pageX - this.offsetLeft;
-         y = e.pageY - this.offsetTop;
-       console.log( "page offsets: "+e.pageX+" and  "+e.pageY+"  ");
-	console.log( "page X and Y: "+x+" and  "+y+"  ");
-	console.log( "offsets: "+this.offsetLeft+" and  "+this.offsetTop+"  ");
-    });*/
+
     //Make element droppable
     $("#jsPlumbContainer").droppable({
         drop: function (ev, ui) {
 		
-	y= y + 100;
+	var yLoc = CurY-400;
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
 
                 var element = $(ui.draggable).clone();
                 var type = element.attr('id');
                 var objName = "dragged" +type+ editorItemCounter;        	
-		// alert(x+" and  "+y+"  ");
-		element.css({'top':x, 'left' : CurY-400});
+		
+		element.css({'top':x, 'left' : yLoc});
                 element.attr('id', objName);
                 element.removeClass("draggableIcon");
                 element.removeClass("ui-draggable");		
@@ -110,7 +119,33 @@ prototype: Object.create(HTMLDivElement.prototype) });
                 jsPlumb.draggable(objName, {
                     containment: $("#jsPlumbContainer")
                 });
-                if(lastItem == null){
+		if(yLoc > latestDeleteSourceLeft && yLoc < latestDeleteTaLeftrget){
+			jsPlumb.connect({
+                        source:detachedSourceId,
+                        target:$("#"+objName),
+                        anchors:["Right", "Left" ],
+			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    	connector: ["Flowchart", { curviness: 100}],
+                    	connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    		}],
+                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
+                    });
+		jsPlumb.connect({
+                        source:$("#"+objName),
+                        target:detachedTargetId,
+                        anchors:["Right", "Left" ],
+			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    	connector: ["Flowchart", { curviness: 100}],
+                    	connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    		}],
+                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
+                    });
+		}else{
+		if(lastItem == null){
                     lastItem = $("#"+objName);
                 }else{
                     jsPlumb.connect({
@@ -126,6 +161,8 @@ prototype: Object.create(HTMLDivElement.prototype) });
                     	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
                     });
                 }
+		}
+                
                 lastItem = $("#"+objName);
             }
         },
