@@ -10,13 +10,19 @@ var id = null;
 var CurElementisSource =null;
 var CurElementisTarget = null;
 var x =100; var CurY = null;
-var connectionList = jsPlumb.getAllConnections();
-var detachedSource = null;
-var detachedTarget = null;
-var detachedSourceId = null;
-var detachedTargetId = null;
-var latestDeleteSourceLeft = null;
-var latestDeleteTaLeftrget = null;
+//var connectionList = jsPlumb.getAllConnections();
+//var detachedSource = null;
+//var detachedTarget = null;
+//var detachedSourceId = null;
+//var detachedTargetId = null;
+//var latestDeleteSourceLeft = null;
+//var latestDeleteTaLeftrget = null;
+var elemSourceLocList = [];
+var elemTargetLocList = [];
+var elemSourceId = [];
+var elemTargetId = [];
+var elemSource = null;
+var elemTarget = null;
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
 });
@@ -62,7 +68,7 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 		    CurY= e.pageX;			
 		  });
 // trying to select the connectors
-
+/*
 jsPlumb.bind("click", function(conn, originalEvent) {
 			if (confirm("Delete connection from " + conn.sourceId + " to " + conn.targetId + "?"))
 				   detachedSourceId = conn.sourceId;
@@ -72,7 +78,7 @@ jsPlumb.bind("click", function(conn, originalEvent) {
 				   latestDeleteSourceLeft = detachedSource.offsetLeft;
 				   latestDeleteTaLeftrget = detachedTarget.offsetLeft;
 				   jsPlumb.detach(conn);
-		});	
+		});*/	
 //the end
 
 	
@@ -108,7 +114,17 @@ jsPlumb.bind("click", function(conn, originalEvent) {
     //Make element droppable
     $("#jsPlumbContainer").droppable({
         drop: function (ev, ui) {
-		
+var currentConnectionList = jsPlumb.getAllConnections();
+for (var key in currentConnectionList){
+			 elemSourceId[key] =currentConnectionList[key].sourceId ;    			
+			 elemSource = document.getElementById(elemSourceId[key]);
+			 elemSourceLocList[key] = elemSource.offsetLeft;
+			//alert(i +" and "+ l);
+			elemTargetId[key] =currentConnectionList[key].targetId ;
+    			// elemTargetList[key] =connectionList[key].targetId ;
+			 elemTarget = document.getElementById(elemTargetId[key]);
+			 elemTargetLocList[key] = elemTarget.offsetLeft;
+		}		
 	var yLoc = CurY-400;
             if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
@@ -139,7 +155,39 @@ jsPlumb.bind("click", function(conn, originalEvent) {
                 jsPlumb.draggable(objName, {
                     containment: $("#jsPlumbContainer")
                 });
-		if(yLoc > latestDeleteSourceLeft && yLoc < latestDeleteTaLeftrget){
+		//trying to get from the map
+for(var mykey in elemSourceLocList){
+
+if(yLoc > elemSourceLocList[mykey] && yLoc < elemTargetLocList[mykey]){
+jsPlumb.detach(currentConnectionList[mykey]);
+var isMiddle = true;
+jsPlumb.connect({
+                        source:elemSourceId[mykey],
+                        target:$("#"+objName),
+                        anchors:["Right", "Left" ],
+			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    	connector: ["Flowchart", { curviness: 100}],
+                    	connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    		}],
+                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
+                    });
+		jsPlumb.connect({
+                        source:$("#"+objName),
+                        target:elemTargetId[mykey],
+                        anchors:["Right", "Left" ],
+			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                    	connector: ["Flowchart", { curviness: 100}],
+                    	connectorStyle: [{
+                        lineWidth: 1,
+                        strokeStyle: "#3366FF"
+                    		}],
+                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
+                    });
+}}
+//end
+		/*if(yLoc > latestDeleteSourceLeft && yLoc < latestDeleteTaLeftrget){
 			jsPlumb.connect({
                         source:detachedSourceId,
                         target:$("#"+objName),
@@ -164,7 +212,9 @@ jsPlumb.bind("click", function(conn, originalEvent) {
                     		}],
                     	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
                     });
-		}else{
+		}*/
+		//else{
+		if(isMiddle!=true){
 		if(lastItem == null){
                     lastItem = $("#"+objName);
                 }else{
@@ -196,7 +246,7 @@ jsPlumb.bind("click", function(conn, originalEvent) {
 $(document).keydown(function(e) {
          //alert(e.which); //run to find the keycode of the key you want, don't use backspace, that is used to go back in browser history
          if (e.keyCode == 46  && CurElement != null)
-         {   
+         {   var connectionList = jsPlumb.getAllConnections(); 
 		for (var key in connectionList){
 			
     			if(connectionList[key].sourceId==CurElement.attr('id')){ CurElementisSource =connectionList[key].targetId }
