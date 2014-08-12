@@ -13,7 +13,7 @@ var id = null;
 var over = "false";
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =100; var CurY = null;
+var x =110; var x1 =40; var CurY = null;
 var elemSourceLocList = [];
 var elemTargetLocList = [];
 var elemSourceId = [];
@@ -79,6 +79,35 @@ function AddDiv() {
         }
 
 //end
+function createDiv(objName, element1,type,x2) {
+			var yLoc1 = CurY-400;
+                		var element = $("<div></div>");
+                                  element.append(element1);                  		  
+                                  element.click(selectDeleteFunction); //since this makes troubles
+                  		  element.dblclick(openPopup);
+                  		  setData(element, type);
+                                  element.addClass("wso2log_style");				 
+					if(type== "SwitchMediator"){			
+					$("#jsPlumbContainer").append('<div id='+objName+' style="height: 200px; width: 200px; background: #fff0f0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%; background: #f4f0f0;"><table width="100%" height="100%"><tr><td  style="height: 100%;width: 50px; border:1px solid #ccc; border-width:1px 1px 1px 1px;" id="draggedSwitchMediatorin" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
+		
+				element.attr('id', objName+"inside"); 
+				element.addClass("draggable");
+				$("#draggedSwitchMediatorin").append(element);						     
+				jsPlumb.draggable(objName+"inside", {
+				    containment: $("#draggedSwitchMediator2")
+				});	
+				//$("#jsPlumbContainerWrapper12").append(element);
+				$("#"+objName).css({'top':x, 'left':yLoc1});
+				}else{
+				element.attr('id', objName); 
+				$("#jsPlumbContainer").append(element);
+				jsPlumb.draggable(objName, {
+				    containment: $("#jsPlumbContainer")
+				});		
+				element.css({'top':x2, 'left':yLoc1});
+				}
+        }
+//adddiv2 end
 
 
 function initJsPlumb(container) {
@@ -139,7 +168,7 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
     $("#jsPlumbContainer").droppable({
     
         drop: function (ev, ui) {//to locate the element
-		   if (over=="false"){
+		var yLoc = CurY-400; //to get the current location in the div
 		var currentConnectionList = jsPlumb.getAllConnections();
 		for (var key in currentConnectionList){//getting a map of the existing elements in the canvas
 			 elemSourceId[key] =currentConnectionList[key].sourceId ;    			
@@ -150,8 +179,7 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 			 elemTarget = document.getElementById(elemTargetId[key]);
 			 elemTargetLocList[key] = elemTarget.offsetLeft;
 		}
-			
-		var yLoc = CurY-400; //to get the current location in the div
+		   if (over=="false"){		
 		if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                 editorItemCounter++;
                 var element1 = $(ui.draggable).clone();
@@ -161,33 +189,9 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 		//getting the switch mediator background stuff created
 		
                 var objName = "dragged" +type+ editorItemCounter;
-                var element = $("<div></div>");
-                element.append(element1);
-		               
-                element.addClass("draggable");
-                element.click(selectDeleteFunction); //since this makes troubles
-		element.dblclick(openPopup);		
-		setData(element, type);
-                element.addClass("wso2log_style");
-		if(type== "SwitchMediator"){			
-			$("#jsPlumbContainer").append('<div id='+"#"+objName+' style="height: 400px;width: 400px;background: #fffff0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%;"><table width="100%" height="100%"><col width="30%"><col width="70%"><tr><td  style="height: 100%;width: 30%; border:1px solid #ccc; border-width:1px 1px 1px 1px;" id="draggedSwitchMediator2" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
-		
-		element.attr('id', objName+"inside"); 
-		element.addClass("draggable");
-		$("#draggedSwitchMediator2").append(element);						     
-		jsPlumb.draggable(objName+"inside", {
-                    containment: $("#draggedSwitchMediator2")
-                });	
-		//$("#jsPlumbContainerWrapper12").append(element);
-		$("#"+objName).css({'top':x, 'left':yLoc});
-		}else{
-		element.attr('id', objName); 
-                $(this).append(element);
-                jsPlumb.draggable(objName, {
-                    containment: $("#jsPlumbContainer")
-                });		
-		element.css({'top':x, 'left':yLoc});
-		}		
+               
+		createDiv(objName, element1,type,x);
+				
 		for(var mykey in elemSourceLocList){
 		if(yLoc > elemSourceLocList[mykey] && yLoc < elemTargetLocList[mykey]){
 		jsPlumb.detach(currentConnectionList[mykey]);
@@ -197,50 +201,35 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 		}}
 		if(isMiddle!=true){
 		if(lastItem == null){
-			if(type== "SwitchMediator"){lastItem = "#"+objName; }else{
+			if(type== "SwitchMediator"){lastItem = $("#"+objName); }else{
                     lastItem = $("#"+objName);}
                 }else{
 		connectDivs(lastItem,$("#"+objName));                   
                 }                
-                if(type!= "SwitchMediator"){lastItem = $("#"+objName);}
+                if(type!= "SwitchMediator"){lastItem = $("#"+objName);}else{lastItem = $("#"+objName); }
 		}
-            }}else{//to locate the element
-                  		var currentConnectionList1 = jsPlumb.getAllConnections();
-                  		for (var key in currentConnectionList1){//getting a map of the existing elements in the canvas
-                  			 elemSourceId1[key] =currentConnectionList1[key].sourceId ;
-                  			 elemSource = document.getElementById(elemSourceId1[key]);
-                  			 elemSourceLocList1[key] = elemSource.offsetLeft;
-
-                  			 elemTargetId1[key] =currentConnectionList1[key].targetId ;
-                  			 elemTarget = document.getElementById(elemTargetId1[key]);
-                  			 elemTargetLocList1[key] = elemTarget.offsetLeft;
-                  		}
-                  		alert("I AM HERE!!");
-                  		var yLoc = CurY-400; //to get the current location in the div
+            }
+		}else{//to locate the element
+                  		                		
+                  		//$("#jsPlumbContainerWrapper11").css("width", "600px");
+				$("#draggedSwitchMediator1").css("width", "1000px");//
+				$("#draggedSwitchMediator1").css("height", "300px");
+				$("#draggedSwitchMediatorin").css("width", "80px");
+				$("#jsPlumbContainer1").css("width", "1000px");
+				$("#jsPlumbContainer1").css("height", "300px");
                   		if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                                   editorItemCounter++;
                                   var element1 = $(ui.draggable).clone();
                                   element1.removeClass("draggableIcon");
                                   element1.removeClass("ui-draggable");
-                                  var type = element1.attr('id');alert(type);
+                                  var type = element1.attr('id');
                   		//getting the switch mediator background stuff created
                   		if(type== "SwitchMediator"){
                   			$('jsPlumbContainerWrapper1').show();
                   		}
                                   var objName = "dragged" +type+"switch"+ editorItemCounter;
-                                  var element = $("<div></div>");
-                                  element.append(element1);
-                  		element.css({'top':x, 'left':yLoc});
-                                  element.attr('id', objName);
-                                  element.addClass("draggable");
-                                  element.click(selectDeleteFunction); //since this makes troubles
-                  		element.dblclick(openPopup);
-                  		setData(element, type);
-                                  element.addClass("wso2log_style");
-                                  $(this).append(element);
-                                  jsPlumb.draggable(objName, {
-                                      containment: $("#jsPlumbContainer")
-                                  });
+                                 
+				createDiv(objName, element1,type,x1);
                   		//trying to get from the map
                   		for(var mykey in elemSourceLocList){
 
@@ -260,73 +249,6 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
                   		}
                               }
                           }
-        },
-		tolerance: "pointer" 
-			
-    });
-
-
-//});
-
-//dropping inside switch mediater areas
-$(document).on('drop','#jsPlumbContainerWrapper11',function (ev, ui)  {alert("IM HERE!!!");});
- $(currentId).droppable({
-		
- drop: function (ev, ui) {//to locate the element
-		var currentConnectionList1 = jsPlumb.getAllConnections();
-		for (var key in currentConnectionList1){//getting a map of the existing elements in the canvas
-			 elemSourceId1[key] =currentConnectionList1[key].sourceId ;    			
-			 elemSource = document.getElementById(elemSourceId1[key]);
-			 elemSourceLocList1[key] = elemSource.offsetLeft;
-			
-			 elemTargetId1[key] =currentConnectionList1[key].targetId ;    			
-			 elemTarget = document.getElementById(elemTargetId1[key]);
-			 elemTargetLocList1[key] = elemTarget.offsetLeft;
-		}
-		alert("I AM HERE!!");	
-		var yLoc = CurY-400; //to get the current location in the div
-		if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
-                editorItemCounter++;
-                var element1 = $(ui.draggable).clone();
-                element1.removeClass("draggableIcon");
-                element1.removeClass("ui-draggable");              
-                var type = element1.attr('id');alert(type);
-		//getting the switch mediator background stuff created
-		if(type== "SwitchMediator"){
-			$('jsPlumbContainerWrapper1').show();
-		}
-                var objName = "dragged" +type+"switch"+ editorItemCounter;
-                var element = $("<div></div>");
-                element.append(element1);
-		element.css({'top':x, 'left':yLoc});
-                element.attr('id', objName);                
-                element.addClass("draggable");
-                element.click(selectDeleteFunction); //since this makes troubles
-		element.dblclick(openPopup);		
-		setData(element, type);
-                element.addClass("wso2log_style");
-                $(this).append(element);
-                jsPlumb.draggable(objName, {
-                    containment: $("#jsPlumbContainer")
-                });
-		//trying to get from the map
-		for(var mykey in elemSourceLocList){
-
-		if(yLoc > elemSourceLocList1[mykey] && yLoc < elemTargetLocList1[mykey]){
-		jsPlumb.detach(currentConnectionList1[mykey]);
-		var isMiddle = true;
-		connectDivs(elemSourceId1[mykey],$("#"+objName));
-		connectDivs($("#"+objName),elemTargetId1[mykey]);		
-		}}
-		if(isMiddle!=true){
-		if(lastItem1 == null){
-                    lastItem1 = $("#"+objName);
-                }else{
-		connectDivs(lastItem1,$("#"+objName));                    
-                }                
-                lastItem1 = $("#"+objName);
-		}
-            }
         },
 		tolerance: "pointer" 
 			
@@ -369,6 +291,3 @@ $(document).keydown(function(e) {
                CurElement = null; //clear, that element doesn't exist anymore
          }
 });
-
-
-
