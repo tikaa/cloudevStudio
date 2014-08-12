@@ -13,7 +13,7 @@ var id = null;
 var over = "false";
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =120; var x1 =40; var CurY = null;
+var x =120; var x1 =40; var CurY = null;var divwidth = 200;var x3=60;
 var elemSourceLocList = [];
 var elemTargetLocList = [];
 var elemSourceId = [];
@@ -88,7 +88,7 @@ function createDiv(objName, element1,type,x2) {
                   		  setData(element, type);
                                   element.addClass("wso2log_style");				 
 					if(type== "SwitchMediator"){			
-					$("#jsPlumbContainer").append('<div id='+objName+' style="height: 200px; width: 200px; background: #fff0f0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%; background: #f4f0f0;"><table width="100%" height="100%"><tr><td  style="height: 100%;width: 50px; border:1px solid #ccc; border-width:1px 1px 1px 1px;" id="draggedSwitchMediatorin" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
+					$("#jsPlumbContainer").append('<div id='+objName+' style="height: 200px; width: '+divwidth+'px; background: #fff0f0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%; background: #f4f0f0;"><table width="100%" height="100%"><tr><td  style="height: 100%;width: 50px; border:1px solid #ccc; border-width:1px 1px 1px 1px;" id="draggedSwitchMediatorin" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
 		
 				element.attr('id', objName+"inside"); 
 				element.addClass("draggable");
@@ -209,13 +209,12 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
                 if(type!= "SwitchMediator"){lastItem = $("#"+objName);}else{lastItem = $("#"+objName); }
 		}
             }
-		}else{//to locate the element
-                  		                		
-                  		//$("#jsPlumbContainerWrapper11").css("width", "600px");
-				$("#draggedSwitchMediator1").css("width", "1000px");//
+		}else{//to locate the element                 		                		
+                  		x3 +=80;alert(x3);
+				$("#draggedSwitchMediator1").css("width", divwidth+x3+"px");
+				$("#jsPlumbContainer1").css("width", divwidth+x3+"px");
 				$("#draggedSwitchMediator1").css("height", "300px");
-				$("#draggedSwitchMediatorin").css("width", "80px");
-				$("#jsPlumbContainer1").css("width", "1000px");
+				$("#draggedSwitchMediatorin").css("width", "80px");				
 				$("#jsPlumbContainer1").css("height", "300px");
                   		if ($(ui.draggable).attr('id').search(/dragged/) == -1) {
                                   editorItemCounter++;
