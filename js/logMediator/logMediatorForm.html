@@ -3,47 +3,9 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<link href="js/logMediator/logMediatorStyle.css" rel="stylesheet">
+<script src="js/logMediator/logMediator.js"></script>
 
-<script language="javascript">
-  $(document).ready(function(){
-
-  //trying to access the parent
- var sPageURL = window.location.search.substring(1);
- sPageURL = sPageURL.replace(/%22/g, '"');
- sPageURL = sPageURL.replace(/%20/g, ' ');
- var logMediator = $.parseJSON(sPageURL);
-				
-				
-$("#mediator_log_log_separator").val(logMediator.separator);
-$('#mediator_log_category').prop("selectedIndex",logMediator.category);
-$('#mediator_log_log_level').prop("selectedIndex",logMediator.logLevel);
-$("#propertyName0").val(logMediator.description);
-
-$("#mybutton").click(function() { 
-	
-	var propertyName = $('#propertyName0').val();
-	var category = $('#mediator_log_category :selected').text();
-	var logLevel =  $('#mediator_log_log_level :selected').text();
-	logMediator.logLevel = logLevel;
-	logMediator.category = category;
-	logMediator.description = propertyName;
-	logMediator.separator = $("#mediator_log_log_separator").val();
-
-	var myval= JSON.stringify(logMediator);			       
-	window.parent.myfunction(myval);
-
-
-$.each(window, function(i, obj) {
-  //use obj.id and obj.name here, for example:
-  //console.log(i + "  is    " + obj);
-});
-
-	
-	});
-
-});
- 
-</script>
 
 </head>
 <body>

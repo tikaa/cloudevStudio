@@ -3,7 +3,7 @@
 function setData(element, type) {
 
 if (type == 'logMediator') {
-   var logString = $.parseJSON(JSON.stringify('{"log":{"_logLevel":0, "_separator":"- ", "_category":1, "properties":[], "description":"susinda logmed"}}'));
+   var logString = $.parseJSON('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda aaaaaa"}');
    element.data('jsonConfig' , logString);
 } 
 if (type == 'dropMediator') {
@@ -15,11 +15,15 @@ if (type == 'dropMediator') {
 ///////////////////////////////////////////////////////////////////////
 
 
+
 ////////////////////////////  this will openup the config dialog acording to the mediator   /////////////////////////////////
 function openPopup() {
 
+
 var type = $(this).attr('id');
 var xmlConfig = $(this).data('jsonConfig');
+alert("dbl click  " + xmlConfig.description + "  " + xmlConfig.category);
+
 if(type.indexOf('logMediator') != -1){
    openLogMediatorPopup(xmlConfig); 
 }
@@ -30,6 +34,7 @@ if(type.indexOf('dropMediator') != -1){
 
 } 
 ////////////////////////////////////////////////////////////////////
+
 
 
 function convertXml2Json(xmlString) {
@@ -43,38 +48,41 @@ function convertJson2Xml(jsonObject) {
 }
 
 
+
 function activateSourceView() {
 
+ console.log('activatesource');
 $('#sourceEditorTextBox').val("");
 var prevElement = null;
 var nextElement = null;
 var connectionList = jsPlumb.getAllConnections();
-for (var key in connectionList){
 
+for (var key in connectionList){
+console.log('looppppppp');
     if(connectionList[key].sourceId != null){
-         alert(connectionList[key].sourceId);
          prevElement = document.getElementById(connectionList[key].sourceId);
-         alert(prevElement + "ss");
     }
 	if(connectionList[key].targetId != null){
 	     nextElement = document.getElementById(connectionList[key].targetId);
 	}
 
     var jObj = $(prevElement).data('jsonConfig');
-    var xmlElement = serializeLogMediator(jObj);
+    console.log(jObj);
+    var xmlElement = x2js.json2xml_str(jObj);
     var currentText = $('#sourceEditorTextBox').val();
     $('#sourceEditorTextBox').val(currentText + xmlElement);
 }
 
-
-    var jObj = $(nextElement).data('jsonConfig');
-    var xmlElement = serializeLogMediator(jObj);
-    var currentText = $('#sourceEditorTextBox').val();
-    $('#sourceEditorTextBox').val(currentText + xmlElement);
-
+var jObj = $(nextElement).data('jsonConfig');
+var xmlElement = x2js.json2xml_str(jObj);
+var currentText = $('#sourceEditorTextBox').val();
+$('#sourceEditorTextBox').val(currentText + xmlElement);
 }
+
+
 
 function activateDesignView() {
    // do nothing
    // do nothing
 }
+
