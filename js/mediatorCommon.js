@@ -19,21 +19,36 @@ if (type == 'dropMediator') {
 ////////////////////////////  this will openup the config dialog acording to the mediator   /////////////////////////////////
 function openPopup() {
 
-
 var type = $(this).attr('id');
-var xmlConfig = $(this).data('jsonConfig');
-alert("dbl click  " + xmlConfig.description + "  " + xmlConfig.category);
 
 if(type.indexOf('logMediator') != -1){
-   openLogMediatorPopup(xmlConfig); 
+   openLogMediatorPopup();
 }
 
-if(type.indexOf('dropMediator') != -1){
-   openLogMediatorPopup(xmlConfig); 
+if(type.indexOf('propertyMediator') != -1){
+   openLogMediatorPopup();
 }
 
 } 
 ////////////////////////////////////////////////////////////////////
+
+function openLogMediatorPopup(){
+
+      doubleClickedElementID = $(this).attr('id');
+      var dElement = $("<div></div>");
+      dElement.load('js/logMediator/logMediatorForm.html');
+      dElement.dialog({ autoOpen: false,
+      	       bgiframe: true,
+               height: 400,
+               width: 600,
+               modal: false,
+               draggable: true,
+               resizable: true,
+               position: 'center' });
+      dElement.dialog('option', 'title', 'Log Mediator');
+      dElement.dialog("open");
+}
+
 
 
 
