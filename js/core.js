@@ -87,6 +87,46 @@ function AddDiv() {
         }
 
 //end
+
+
+function addSwitchMediator(element, objName, yLoc1) {
+
+    $("#jsPlumbContainer").append('<div id='+objName+' style="height: 200px; width: '+divwidth+'px; background: #fff0f0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%; background: #f4f0f0;"><table class="table" width="100%" height="100%"><tr><td  style="height: 100%;width: 80px; border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;" id="draggedSwitchMediatorin" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
+
+    element.attr('id', objName+"inside");
+    element.addClass("draggable");
+    $("#draggedSwitchMediatorin").append(element);
+    $( "#"+objName+"inside" ).position({
+          my: "left center",
+          at: "left center",
+          of: "#draggedSwitchMediatorin"
+        });
+    jsPlumb.draggable(objName+"inside", {
+        containment: $("#draggedSwitchMediator2")
+    });
+    //$("#jsPlumbContainerWrapper12").append(element);
+    $("#"+objName).css({'top':x, 'left':yLoc1});
+}
+
+
+
+function openPopup(){
+
+      doubleClickedElementID = $(this).attr('id');
+      var dElement = $("<div></div>");
+            dElement.load('js/logMediator/logMediatorForm.html');
+            dElement.dialog({ autoOpen: false,
+            	       bgiframe: true,
+                     height: 400,
+                     width: 600,
+                     modal: false,
+                     draggable: true,
+                     resizable: true,
+                     position: 'center' });
+      dElement.dialog('option', 'title', 'Log Mediator');
+      dElement.dialog("open");
+}
+
 function createDiv(objName, element1,type,x2) {
 			var yLoc1 = CurY-400;
                 		var element = $("<div></div>");
@@ -96,21 +136,7 @@ function createDiv(objName, element1,type,x2) {
                   		  setData(element, type);
                                   element.addClass("wso2log_style");
 					if(type== "SwitchMediator"){
-					$("#jsPlumbContainer").append('<div id='+objName+' style="height: 200px; width: '+divwidth+'px; background: #fff0f0;"><div id="jsPlumbContainer1" style="position: relative;width: 100%;height: 100%; background: #f4f0f0;"><table class="table" width="100%" height="100%"><tr><td  style="height: 100%;width: 80px; border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;" id="draggedSwitchMediatorin" rowspan="2" style="border:1px solid #ccc; border-width:1px 1px 1px 1px;">Switch Mediator</td><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr><tr><td style="border:1px solid #ccc; border-width:1px 1px 1px 1px; border-radius: 25px;"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr></table></div></div>');
-
-				element.attr('id', objName+"inside");
-				element.addClass("draggable");
-				$("#draggedSwitchMediatorin").append(element);
-				$( "#"+objName+"inside" ).position({
-					  my: "left center",
-					  at: "left center",
-					  of: "#draggedSwitchMediatorin"
-					});
-				jsPlumb.draggable(objName+"inside", {
-				    containment: $("#draggedSwitchMediator2")
-				});
-				//$("#jsPlumbContainerWrapper12").append(element);
-				$("#"+objName).css({'top':x, 'left':yLoc1});
+                         addSwitchMediator(element, objName, yLoc1);
 				}else{
 				element.attr('id', objName);
 				$("#jsPlumbContainer").append(element);
@@ -176,6 +202,8 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 
         }
     });
+
+
 
 
     //Make element droppable

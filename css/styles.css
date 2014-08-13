@@ -115,6 +115,7 @@ body {
   right:0px;
   top:0px;
 }
+
 .child3 {
   width:70px;
   height:70px;
@@ -122,4 +123,36 @@ body {
   position:absolute;
   right:0px;
   top:0px;
+}
+
+
+.switchDivStyle {
+ height: 200px; width: '+divwidth+'px;
+ background: #fff0f0
+ }
+
+.jsuplumContainerStyle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f4f0f0;
+}
+
+.switchTableStyle {
+ width: 100%;
+ height:100%;
+}
+
+.switchTableTDStyle {
+ height: 100%;
+ width: 80px;
+ border:1px solid #ccc;
+ border-width:1px 1px 1px 1px;
+ border-radius: 25px;
+}
+
+.switchJsWrapperStyle {
+ height:100%;
+ width:100%;
+ background: #ffffff;
 }

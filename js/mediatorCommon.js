@@ -17,7 +17,7 @@ if (type == 'dropMediator') {
 
 
 ////////////////////////////  this will openup the config dialog acording to the mediator   /////////////////////////////////
-function openPopup() {
+function openPopupDialog() {
 
 var type = $(this).attr('id');
 
@@ -65,15 +65,14 @@ function convertJson2Xml(jsonObject) {
 
 
 function activateSourceView() {
-
- console.log('activatesource');
+console.log('activateSourceView');
 $('#sourceEditorTextBox').val("");
 var prevElement = null;
 var nextElement = null;
 var connectionList = jsPlumb.getAllConnections();
 
 for (var key in connectionList){
-console.log('looppppppp');
+
     if(connectionList[key].sourceId != null){
          prevElement = document.getElementById(connectionList[key].sourceId);
     }
@@ -82,6 +81,7 @@ console.log('looppppppp');
 	}
 
     var jObj = $(prevElement).data('jsonConfig');
+    console.log('serializing ' + jObj);
     console.log(jObj);
     var xmlElement = x2js.json2xml_str(jObj);
     var currentText = $('#sourceEditorTextBox').val();
@@ -89,6 +89,8 @@ console.log('looppppppp');
 }
 
 var jObj = $(nextElement).data('jsonConfig');
+console.log('serializing ' + jObj);
+console.log(jObj);
 var xmlElement = x2js.json2xml_str(jObj);
 var currentText = $('#sourceEditorTextBox').val();
 $('#sourceEditorTextBox').val(currentText + xmlElement);
@@ -97,7 +99,7 @@ $('#sourceEditorTextBox').val(currentText + xmlElement);
 
 
 function activateDesignView() {
-   // do nothing
+   console.log('activateDesignView');
    // do nothing
 }
 
