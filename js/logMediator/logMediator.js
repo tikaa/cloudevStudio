@@ -54,58 +54,37 @@ function deSerializeLogMediator(xmlString) {
 }
 
 
-var logMediatorData2 = null;
 
   $(document).ready(function(){
 
-    //$("#propertyName0").val('susinda');
-    var logMediatorID = window.parent.doubleClickedElementID;
-    console.log('element is ' +  logMediatorID);
-       //var logMediator = $(element).data('jsonConfig');
+    var logMediatorElement =  window.parent.CurElement.data('jsonConfig');
+    var logMediator = logMediatorElement.log;
+    console.log(logMediator);
+    $("#mediator_log_log_separator").val(logMediator.seperator);
+    $('#mediator_log_category').prop("selectedIndex", logMediator._category);
+    $('#mediator_log_log_level').prop("selectedIndex", logMediator._logLevel);
+    $("#propertyName0").val(logMediator.description);
 
-    var divMediator = window.parent.document.getElementById(logMediatorID);
-    console.log('divMediator is ' +  divMediator);
-    var logMediatorData = $(divMediator).data('jsonConfig');
-    console.log('inside form  ' + logMediatorData.logLevel);
-    console.log('description ' +  logMediatorData.description);
-
-    //$("#mediator_log_log_separator").val(logMediator.separator);
-    $('#mediator_log_category').prop("selectedIndex", logMediator.category);
-    $('#mediator_log_log_level').prop("selectedIndex", logMediator.logLevel);
-    $("#propertyName0").val(logMediatorData.description);
-    var logMediatorData2 = jQuery.extend(true, {}, logMediatorData);
 
 $("#mybutton").click(function() {
 
 	var propertyName = $('#propertyName0').val();
-	var category = $('#mediator_log_category :selected').text();
-	var logLevel =  $('#mediator_log_log_level :selected').text();
-    var seperator = $("#mediator_log_log_separator").val();
+	var category = $('#mediator_log_category :selected').val();
+	var logLevel =  $('#mediator_log_log_level :selected').val();
+    var separator = $("#mediator_log_log_separator").val();
+    console.log(propertyName + "    "  + category + "    " + logLevel + "     " + separator);
 
+    var logMediatorElement =  window.parent.CurElement.data('jsonConfig');
+    var logMediatorData2 = logMediatorElement.log;
 
-    var logMediatorID = window.parent.doubleClickedElementID;
-    console.log(' saving element is ' +  logMediatorID);
-//    var divMediator2 = window.parent.document.getElementById(logMediatorID);
-//    console.log('saving divMediator is ' +  divMediator2);
-//    var logMediatorData2 = $(divMediator2).data('jsonConfig');
-    console.log('saving loglevel  ' + logMediatorData2.logLevel);
-
-	logMediatorData2.logLevel = logLevel;
-	logMediatorData2.category = category;
+	logMediatorData2._logLevel = logLevel;
+	logMediatorData2._category = category;
 	logMediatorData2.description = propertyName;
-	logMediatorData2.separator = seperator;
+	logMediatorData2.seperator = separator;
+	console.log(logMediatorData2);
 
-    //window.parent.CurElement.data('jsonConfig', logMediator);
-    //var logMediator2 = window.parent.CurElement.data('jsonConfig');
-    //alert(logMediator2.description + "  " + logMediator.category);
-    window.parent.setUpdatedDataCallBack(logMediatorData2);
-
-
-//$.each(window, function(i, obj) {
-  //use obj.id and obj.name here, for example:
-  //console.log(i + "  is    " + obj);
-//});
-
+	logMediatorElement.log = logMediatorData2;
+    window.parent.setUpdatedDataCallBack(logMediatorElement);
 
 	});
 

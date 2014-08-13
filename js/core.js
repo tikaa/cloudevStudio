@@ -25,6 +25,8 @@ var elemTargetId1 = [];
 var elemSource = null;
 var elemTarget = null;
 var addAmount =0;
+
+
 jsPlumb.bind("ready", function () {
     initJsPlumb($("#jsPlumbContainer"));
 });
@@ -93,12 +95,13 @@ function addSwitchMediator(element, objName, yLoc1, image) {
 
     $("#jsPlumbContainer").append('<div id='+objName+' style="height: 165px; width: '+divwidth+'px; background: #fff0f0;"></div>')
     $("#"+objName).append('<div id="jsPlumbContainer1" style="jsuplumContainerStyle"></div>')
-    $("#jsPlumbContainer1").append('<table id="switchtableID" class="table" width="100%" height="100%"><table/>');
+    $("#jsPlumbContainer1").append('<table id="switchtableID" width="100%" height="100%"><table/>');
     $("#switchtableID").append('<tr><td  id="draggedSwitchMediatorin" rowspan="2" style="switchTableLeftTDStyle">Switch Mediator</td><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr>');
     $("#switchtableID").append('<tr><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr>');
     $("#draggedSwitchMediatorin").append(image);
     element.attr('id', objName+"inside");
-    //$("#"+objName)..addClass("draggable");
+    $("#"+objName).addClass("wso2log_style");
+    $("#"+objName).addClass("draggable");
     $("#draggedSwitchMediatorin").append(element);
     $( "#"+objName+"inside" ).position({
           my: "left center",

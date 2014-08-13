@@ -3,7 +3,7 @@
 function setData(element, type) {
 
 if (type == 'logMediator') {
-   var logString = $.parseJSON('{"logLevel":0, "separator":"- ", "category":1, "properties":[], "description":"susinda aaaaaa"}');
+   var logString = $.parseJSON('{"log": {"_logLevel":0, "_separator":",", "_category":0, "properties":[], "description":"susindas log mediator"}}');
    element.data('jsonConfig' , logString);
 } 
 if (type == 'dropMediator') {
