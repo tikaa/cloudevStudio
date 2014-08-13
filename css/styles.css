@@ -127,15 +127,16 @@ body {
 
 
 .switchDivStyle {
- height: 200px; width: '+divwidth+'px;
- background: #fff0f0
+ height: 200px;
+ width: 200px;
+ background: #fff000;
  }
 
 .jsuplumContainerStyle {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #f4f0f0;
+  background: #ffff00;
 }
 
 .switchTableStyle {
@@ -144,11 +145,13 @@ body {
 }
 
 .switchTableTDStyle {
- height: 100%;
- width: 80px;
  border:1px solid #ccc;
  border-width:1px 1px 1px 1px;
  border-radius: 25px;
+}
+
+.switchTableLeftTDStyle {
+border:1px solid #ccc; border-width:1px 1px 1px 1px;
 }
 
 .switchJsWrapperStyle {
