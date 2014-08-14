@@ -58,6 +58,7 @@ function deSerializeLogMediator(xmlString) {
   $(document).ready(function(){
 
     var logMediatorElement =  window.parent.CurElement.data('jsonConfig');
+    console.log(window.parent.CurElement);
     var logMediator = logMediatorElement.log;
     console.log(logMediator);
     $("#mediator_log_log_separator").val(logMediator.seperator);

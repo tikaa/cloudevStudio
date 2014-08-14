@@ -24,7 +24,7 @@ var elemSourceId1 = [];
 var elemTargetId1 = [];
 var elemSource = null;
 var elemTarget = null;
-var addAmount =0;
+var xSpace =0;
 
 
 jsPlumb.bind("ready", function () {
@@ -48,45 +48,50 @@ function selectDeleteFunction() {
     }
 
 //end
+
+
+
+
 //connect function
 function connectDivs(source,target){
+
+console.log('connectDivs ' + source + '   ' + target);
 jsPlumb.connect({
-                        source:source,
-                        target:target,
-                        anchors:["Right", "Left" ],
-			paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
-                    	connector: ["Flowchart", { curviness: 100}],
-                    	connectorStyle: [{
-                        lineWidth: 1,
-                        strokeStyle: "#3366FF"
-                    		}],
-                    	hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
-                    });
-
+                 source:source,
+                 target:target,
+                 anchors:["Right", "Left" ],
+			     paintStyle: { strokeStyle: "#3366FF", lineWidth: 1 },
+                 connector: ["Flowchart", { curviness: 100}],
+                 connectorStyle: [{ lineWidth: 1, strokeStyle: "#3366FF" }],
+                 hoverPaintStyle: { strokeStyle: "#3366FF", lineWidth: 8 }
+                 });
 }
+
 //add div functoin
-function AddDiv() {
+function AddDiv(logMediatorObj) {
 
-            editorItemCounter++;
+       jsonStr = '{"log":' + JSON.stringify(logMediatorObj) + ' }'
+       jsonObj1 = $.parseJSON(jsonStr);
 
-                var objName = "draggedElem"+editorItemCounter;
-
-                var element = $("<div></div>");
-                var img = $('<img id="dynamic">'); //Equivalent: $(document.createElement('img'))
-		element.css({'top':x, 'left':250+addAmount});
-                element.attr('id', objName);
-                element.attr('class',"draggable");//not working
-		element.prepend('<img id="theImg" src="icons/call-mediator.gif" />')
-                element.click(selectDeleteFunction); //since this makes troubles
-		element.dblclick(openPopup);
-		//setData(element, type);
-                element.addClass("wso2log_style");
-                //$(this).append(element);
-                $("#jsPlumbContainer").append(element);
-
-		addAmount= 200;
-		lastItem = $("#"+objName);
-        }
+       editorItemCounter++;
+       var objName = "draggedElem"+editorItemCounter;
+       console.log('Adding a log mediator' + objName + '  ' + jsonStr);
+       console.log(jsonObj1);
+       var element = $("<div></div>");
+       //var img = $('<img id="dynamic">'); //Equivalent: $(document.createElement('img'))
+	   element.css({'top':x, 'left':250 + xSpace});
+       element.attr('id', objName);
+       element.addClass("draggable");//not working
+	   element.prepend('<img src="icons/log-mediator.gif" />')
+       element.click(selectDeleteFunction); //since this makes troubles
+	   element.dblclick(openPopup);
+	   element.data('jsonConfig', jsonObj1);
+       element.addClass("wso2log_style");
+       $("#jsPlumbContainer").append(element);
+	   lastItem = $("#"+objName);
+	   xSpace += 200;
+	   return objName;
+}
 
 //end
 
@@ -155,7 +160,7 @@ function createDiv(objName, image,type,x2) {
                 element.css({'top':x2, 'left':yLoc1});
                 element.addClass("wso2log_style");
             }
-        }
+ }
 
 
 

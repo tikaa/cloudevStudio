@@ -66,10 +66,11 @@ function convertJson2Xml(jsonObject) {
 
 function activateSourceView() {
 console.log('activateSourceView');
-$('#sourceEditorTextBox').val("");
 var prevElement = null;
 var nextElement = null;
 var connectionList = jsPlumb.getAllConnections();
+
+$('#sourceEditorTextBox').val('<sequence name="sample_sequence">');
 
 for (var key in connectionList){
 
@@ -81,9 +82,10 @@ for (var key in connectionList){
 	}
 
     var jObj = $(prevElement).data('jsonConfig');
+    console.log(prevElement);
     console.log('serializing ' + jObj);
     console.log(jObj);
-    var xmlElement = x2js.json2xml_str(jObj);
+    var xmlElement = '\n' + x2js.json2xml_str(jObj);
     var currentText = $('#sourceEditorTextBox').val();
     $('#sourceEditorTextBox').val(currentText + xmlElement);
 }
@@ -91,15 +93,30 @@ for (var key in connectionList){
 var jObj = $(nextElement).data('jsonConfig');
 console.log('serializing ' + jObj);
 console.log(jObj);
-var xmlElement = x2js.json2xml_str(jObj);
-var currentText = $('#sourceEditorTextBox').val();
-$('#sourceEditorTextBox').val(currentText + xmlElement);
+var xmlElement = '\n' + x2js.json2xml_str(jObj);
+var currentText = $('#sourceEditorTextBox').val() ;
+$('#sourceEditorTextBox').val(currentText + xmlElement + '\n</sequence>');
 }
 
 
 
 function activateDesignView() {
    console.log('activateDesignView');
-   // do nothing
+   var sequenceObj = x2js.xml_str2json($("#sourceEditorTextBox").val());
+   var sequence = sequenceObj.sequence;
+   var logArray = sequence.log;
+   console.log(logArray);
+
+   $("#jsPlumbContainer").empty();
+   var prevDivElement = null;
+   for (var i=0; i<logArray.length; i++) {
+       console.log(logArray[i]);
+       var currentDiv = AddDiv(logArray[i]);
+       if (prevDivElement != null ) {
+         connectDivs(prevDivElement, currentDiv);
+       }
+       prevDivElement = currentDiv;
+   }
+
 }
 
