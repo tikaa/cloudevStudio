@@ -31,22 +31,3 @@ if(type.indexOf('propertyMediator') != -1){
 } 
 
 
-function openMediatorConfigDialog(path, title){
-
-      doubleClickedElementID = $(this).attr('id');
-      var dElement = $("<div></div>");
-      dElement.load(path);
-      dElement.dialog({ autoOpen: false,
-      	       bgiframe: true,
-               height: 400,
-               width: 600,
-               modal: false,
-               draggable: true,
-               resizable: true,
-               position: 'center' });
-      dElement.dialog('option', 'title', title);
-      dElement.dialog("open");
-}
-
-
-
