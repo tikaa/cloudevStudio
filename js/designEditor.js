@@ -1,8 +1,9 @@
 
 //try to get the canvas inside the switch mediator item!!! :( :P Awanthikooo
 function selectDeleteFunction() {
-  if (CurElement != null)
-   CurElement.removeClass('selected'); //deselect old
+  if (CurElement != null) {
+    CurElement.removeClass('selected'); //deselect old
+  }
 
   CurElement = $(this);
   id = $(this).attr('id');
@@ -62,7 +63,7 @@ function createDiv(objName, image,type,x2) {
                     containment: $("#jsPlumbContainer")
                 });
                 element.css({'top':x2, 'left':yLoc1});
-                element.addClass("wso2log_style");
+                element.addClass("wso2Mediator_style");
             }
  }
 
@@ -85,7 +86,7 @@ function AddDiv(logMediatorObj) {
        element.click(selectDeleteFunction);  
        element.dblclick(openPopupDialog);
        element.data('jsonConfig', jsonObj1);
-       element.addClass("wso2log_style");
+       element.addClass("wso2Mediator_style");
        $("#jsPlumbContainer").append(element);
 	   lastItem = $("#"+objName);
 	   xSpace += 200;
@@ -102,7 +103,7 @@ function addSwitchMediator(element, objName, yLoc1, image) {
     $("#switchtableID").append('<tr><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr>');
     $("#draggedSwitchMediatorin").append(image);
     element.attr('id', objName+"inside");
-    $("#"+objName).addClass("wso2log_style");
+    $("#"+objName).addClass("wso2Mediator_style");
     $("#"+objName).draggable()
     $("#draggedSwitchMediatorin").append(element);
     $( "#"+objName+"inside" ).position({
@@ -146,6 +147,7 @@ function jsplumbHandleDraggable() {
 
 
 function jsplumbHandleDropable() {
+
 $("#jsPlumbContainer").droppable({
 drop: function (ev, ui) {//to locate the element
 		var yLoc = CurY-400; //to get the current location in the div

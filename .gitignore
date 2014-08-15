@@ -1,0 +1,7 @@
+
+# ignore target and bin folders from status
+target/
+bin/
+.idea/*
+*~
+# see http://schacon.github.io/git/gitignore.html for config details
