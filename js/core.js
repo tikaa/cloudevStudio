@@ -26,6 +26,7 @@ var elemSource = null;
 var elemTarget = null;
 var xSpace =0; var a =0;
 var currentPopup = null;
+var x2js = null;
 
 
 jsPlumb.bind("ready", function () {
@@ -178,7 +179,7 @@ function initJsPlumb(container) {
 
 $(document).ready(function () {
 
-
+x2js = new X2JS();
 
 $(document).on('mouseenter','#jsPlumbContainerWrapper11',function() {
 	currentId = $(this).attr('id'); //alert(currentId);
@@ -191,9 +192,8 @@ $(document).on('mouseleave','#jsPlumbContainerWrapper11',function() {
 });
 
 
-x2js = new X2JS();
-
  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      console.log('tabChagne');
      var tabName = $(e.target).html();
      if ( tabName == 'Source') {
          activateSourceView();
@@ -201,6 +201,8 @@ x2js = new X2JS();
          activateDesignView();
        }
  });
+
+
 
 
 var logMediator = document.registerElement('wso2-log', {
