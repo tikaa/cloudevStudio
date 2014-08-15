@@ -1,8 +1,4 @@
 
-
-
-
-
 function activateSourceView() {
 
     console.log('activateSourceView');
