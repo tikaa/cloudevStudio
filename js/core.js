@@ -13,7 +13,7 @@ var id = null;
 var over = "false";
 var CurElementisSource =null;
 var CurElementisTarget = null;
-var x =120; var x1 =40; var CurY = null;var divwidth = 200;var x3=60;
+var x =170; var x1 =170; var CurY = null;var divwidth = 200;var x3=60; var x5 = 120;
 var elemSourceLocList = [];
 var elemTargetLocList = [];
 var elemSourceId = [];
@@ -24,7 +24,8 @@ var elemSourceId1 = [];
 var elemTargetId1 = [];
 var elemSource = null;
 var elemTarget = null;
-var xSpace =0;
+var xSpace =0; var a =0;
+var currentPopup = null;
 
 
 jsPlumb.bind("ready", function () {
@@ -40,14 +41,6 @@ function selectDeleteFunction() {
   id = $(this).attr('id');
   CurElement.addClass('selected'); //select new
 }
-//Susantha's Function
- function setUpdatedDataCallBack(obj) {
-      var strID = CurElement.attr('id');
-      var divMediator = document.getElementById(strID);
-      $(divMediator).data('jsonConfig', obj);
-    }
-
-//end
 
 
 
@@ -99,35 +92,34 @@ function AddDiv(logMediatorObj) {
 function addSwitchMediator(element, objName, yLoc1, image) {
 
     $("#jsPlumbContainer").append('<div id='+objName+' style="height: 165px; width: '+divwidth+'px; background: #fff0f0;"></div>')
-    $("#"+objName).append('<div id="jsPlumbContainer1" style="jsuplumContainerStyle"></div>')
+    $("#"+objName).append('<div id="jsPlumbContainer1" style=" height:100%; width:100%;"></div>')
     $("#jsPlumbContainer1").append('<table id="switchtableID" width="100%" height="100%"><table/>');
     $("#switchtableID").append('<tr><td  id="draggedSwitchMediatorin" rowspan="2" style="switchTableLeftTDStyle">Switch Mediator</td><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr>');
     $("#switchtableID").append('<tr><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper12" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Default</div></td></tr>');
     $("#draggedSwitchMediatorin").append(image);
     element.attr('id', objName+"inside");
     $("#"+objName).addClass("wso2log_style");
-    $("#"+objName).addClass("draggable");
+    $("#"+objName).draggable()
     $("#draggedSwitchMediatorin").append(element);
     $( "#"+objName+"inside" ).position({
           my: "left center",
           at: "left center",
           of: "#draggedSwitchMediatorin"
         });
-    jsPlumb.draggable(objName+"inside", {
-        containment: $("#draggedSwitchMediator2")
-    });
+    
     //$("#jsPlumbContainerWrapper12").append(element);
-    $("#"+objName).css({'top':x, 'left':yLoc1});
+    $("#"+objName).css({'top':x5, 'left':yLoc1});
 }
 
 
 
 function openPopup(){
-
+       if(a==0){     
       doubleClickedElementID = $(this).attr('id');
-      var dElement = $("<div></div>");
-            dElement.load('js/logMediator/logMediatorForm.html');
-            dElement.dialog({ autoOpen: false,
+      $(document.body).append('<div id="logMpopup"></div>');
+	    $("#logMpopup").attr('id', "logMpopup");
+            $("#logMpopup").load('js/logMediator/logMediatorForm.html');
+            $("#logMpopup").dialog({ autoOpen: false,
             	       bgiframe: true,
                      height: 400,
                      width: 600,
@@ -135,9 +127,22 @@ function openPopup(){
                      draggable: true,
                      resizable: true,
                      position: 'center' });
-      dElement.dialog('option', 'title', 'Log Mediator');
-      dElement.dialog("open");
+      $("#logMpopup").dialog('option', 'title', 'Log Mediator');
+		currentPopup = $("#logMpopup"); ++a;}
+      currentPopup.dialog("open");
+		
 }
+
+//Susantha's Function
+ function setUpdatedDataCallBack(obj) {
+      var strID = CurElement.attr('id');
+      var divMediator = document.getElementById(strID);
+      $(divMediator).data('jsonConfig', obj);
+      currentPopup.dialog("close");
+    }
+
+//end
+
 
 function createDiv(objName, image,type,x2) {
 			var yLoc1 = CurY-400;
@@ -248,7 +253,7 @@ $(document).mousemove(function(e){// to get the cursor point to drop an icon
 		//getting the switch mediator background stuff created
 
         var objName = "dragged" +type+ editorItemCounter;
-		createDiv(objName, element1,type,x);
+		createDiv(objName, element1,type,170);
 
 		for(var mykey in elemSourceLocList){
 		if(yLoc > elemSourceLocList[mykey] && yLoc < elemTargetLocList[mykey]){
