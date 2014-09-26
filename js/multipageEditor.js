@@ -11,11 +11,11 @@ var over = "false";
 var CurElementisSource = null;
 var CurElementisTarget = null;
 var x = 170;
-var topLocation = 170;
+var topLocation = 170; //in pixels.. all the number values given here needs to be tested and altered for all browsers and scenarios.. hence not finalised yet
 var CurXLoc = null;
-var divwidth = 200;
-var newElemXLoc = 60;
-var topLoc = 120;
+var divwidth = 200; //in pixels.. all the number values given here needs to be tested and altered for all browsers and scenarios.. hence not finalised yet
+var newElemXLoc = 60; //in pixels.. all the number values given here needs to be tested and altered for all browsers and scenarios.. hence not finalised yet
+var topLoc = 120; //in pixels.. all the number values given here needs to be tested and altered for all browsers and scenarios.. hence not finalised yet
 var elemSourceLocList = [];
 var elemTargetLocList = [];
 var elemSourceId = [];
@@ -26,11 +26,12 @@ var elemSourceId1 = [];
 var elemTargetId1 = [];
 var elemSource = null;
 var elemTarget = null;
-var xSpace = 0;
+var xSpace = 0; //in pixels.. all the number values given here needs to be tested and altered for all browsers and scenarios.. hence not finalised yet
 var popupCount = 0;
 var currentPopup = null;
 var x2js = null;
 var elemIsMiddle = false;
+var switchMedType = "SwitchMediator";
 
 
 $(document).ready(function () {

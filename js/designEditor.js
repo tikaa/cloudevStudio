@@ -69,7 +69,7 @@ function createDiv(objName, image, type, topLoc) {
 }
 
 
-//add div functoin
+//add div function
 function AddDiv(logMediatorObj) {
 
     jsonStr = '{"log":' + JSON.stringify(logMediatorObj) + ' }'
@@ -97,7 +97,9 @@ function AddDiv(logMediatorObj) {
 
 function addSwitchMediator(element, objName, leftLoc, image) {
 
-    $("#jsPlumbContainer").append('<div id=' + objName + ' style="height: 165px; width: ' + divwidth + 'px; background: #fff0f0;"></div>')
+    var backgroundContainer = $("#jsPlumbContainer");
+
+    backgroundContainer.append('<div id=' + objName + ' style="height: 165px; width: ' + divwidth + 'px; background: #fff0f0;"></div>')
     $("#" + objName).append('<div id="jsPlumbContainer1" style=" height:100%; width:100%;"></div>')
     $("#jsPlumbContainer1").append('<table id="switchtableID" width="100%" height="100%"><table/>');
     $("#switchtableID").append('<tr><td  id="draggedSwitchMediatorin" rowspan="2" style="switchTableLeftTDStyle">Switch Mediator</td><td style="switchTableTDStyle"><div id="jsPlumbContainerWrapper11" class="well-lg"  style="height:100%; width:100%; background: #ffffff;">Case</div></td></tr>');
@@ -118,7 +120,7 @@ function addSwitchMediator(element, objName, leftLoc, image) {
 }
 
 
-//connect function
+//connect function with jsplumb
 function connectDivs(source, target) {
     console.log('connectDivs ' + source + '   ' + target);
     jsPlumb.connect({
@@ -177,6 +179,7 @@ function jsplumbHandleDropable() {
                 newDraggedElem.removeClass("ui-draggable");
                 var type = newDraggedElem.attr('id');
 
+
                 if (over == "false") {
 
                     //getting the switch mediator background stuff created
@@ -197,7 +200,7 @@ function jsplumbHandleDropable() {
                     newDroppedItem = $("#" + newDroppedElem);
                     if (elemIsMiddle != true) {
                         if (lastItem == null) {
-                            if (type == "SwitchMediator") {
+                            if (type == switchMedType) {
                                 lastItem = newDroppedItem;
                             } else {
                                 lastItem = newDroppedItem;
@@ -205,7 +208,7 @@ function jsplumbHandleDropable() {
                         } else {
                             connectDivs(lastItem, newDroppedItem);
                         }
-                        if (type != "SwitchMediator") {
+                        if (type != switchMedType) {
                             lastItem = newDroppedItem;
                         } else {
                             lastItem = newDroppedItem;
@@ -213,43 +216,43 @@ function jsplumbHandleDropable() {
                     }
 
                 } else {//to locate the element
-                    newElemXLoc += 80;
+                    newElemXLoc += 80; // incrementing the dropped location dynamically.. the integer value needs to be tested for all browsers hence not yet finalized
 
                     $("#draggedSwitchMediator1").css("width", divwidth + newElemXLoc + "px"); // naming is done dynamically, since we are working with only one switch mediator it is named as this
                     $("#jsPlumbContainer1").css("width", divwidth + newElemXLoc + "px");
                     $("#draggedSwitchMediator1").css("height", "300px");
                     $("#draggedSwitchMediator1").css("width", "80px");
-                        //getting the switch mediator background stuff created
-                        if (type == "SwitchMediator") {
-                            $('jsPlumbContainerWrapper1').show();
-                        }
-                        newDroppedElem = "dragged" + type + "switch" + editorItemCounter;
+                    //getting the switch mediator background area created
+                    if (type == switchMedType) {
+                        $('jsPlumbContainerWrapper1').show();
+                    }
+                    newDroppedElem = "dragged" + type + "switch" + editorItemCounter;
 
-                        createDiv(newDroppedElem, newDraggedElem, type, topLocation);
-                        //trying to get from the map
-                        for (var eleminList in elemSourceLocList) {
+                    createDiv(newDroppedElem, newDraggedElem, type, topLocation);
+                    //trying to get from the map
+                    for (var eleminList in elemSourceLocList) {
 
-                            if (elemSourceLocList.hasOwnProperty(eleminList)) {
+                        if (elemSourceLocList.hasOwnProperty(eleminList)) {
 
-                                if (yLoc > elemSourceLocListIn[eleminList] && yLoc < elemTargetLocListIn[eleminList]) {
-                                    jsPlumb.detach(currentConnectionList1[eleminList]);
-                                    elemIsMiddle = true;
-                                    connectDivs(elemSourceId1[eleminList], $("#" + newDroppedElem));
-                                    connectDivs($("#" + newDroppedElem), elemTargetId1[eleminList]);
-                                }
+                            if (yLoc > elemSourceLocListIn[eleminList] && yLoc < elemTargetLocListIn[eleminList]) {
+                                jsPlumb.detach(currentConnectionList1[eleminList]);
+                                elemIsMiddle = true;
+                                connectDivs(elemSourceId1[eleminList], $("#" + newDroppedElem));
+                                connectDivs($("#" + newDroppedElem), elemTargetId1[eleminList]);
                             }
-                        }
-                    newDroppedItem = $("#" + newDroppedElem)
-                        if (elemIsMiddle != true) {
-                            if (lastItemInSwitch == null) {
-                                lastItemInSwitch = newDroppedItem;
-                            } else {
-                                connectDivs(lastItemInSwitch, newDroppedItem);
-                            }
-                            lastItemInSwitch = newDroppedItem;
                         }
                     }
+                    newDroppedItem = $("#" + newDroppedElem)
+                    if (elemIsMiddle != true) {
+                        if (lastItemInSwitch == null) {
+                            lastItemInSwitch = newDroppedItem;
+                        } else {
+                            connectDivs(lastItemInSwitch, newDroppedItem);
+                        }
+                        lastItemInSwitch = newDroppedItem;
+                    }
                 }
+            }
         },
         tolerance: "pointer"
     });
