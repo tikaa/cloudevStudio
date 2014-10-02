@@ -133,7 +133,7 @@ function activateSourceView() {
     var nextElement = null;
     var connectionList = jsPlumb.getAllConnections();
     var jObj = null;
-    var xmlElement = nul;
+    var xmlElement = null;
     var currentText = null;
     var sourceEditorTBox = $('#sourceEditorTextBox');
 
